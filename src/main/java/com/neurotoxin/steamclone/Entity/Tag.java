@@ -8,17 +8,13 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Steam {
+public class Tag {
 
     @Id
     @GeneratedValue
-    @Column(name = "steam_id")
+    @Column(name = "tag_id")
     private Long id;
 
-    // 내용 차후 추가
-
-    @OneToMany(mappedBy = "steam")
-    private List<Member> members;
-
-    //==기타 메서드==//
+    @ManyToMany(mappedBy = "tags")
+    private List<Game> games;
 }
