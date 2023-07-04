@@ -1,27 +1,24 @@
 package com.neurotoxin.steamclone.Entity;
 
-
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-public class Library {
-
+public class CartItemGame {
 
     @Id
     @GeneratedValue
-    @Column(name = "library_id")
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn (name = "member_id")
     private Member member;
 
-    @OneToMany (mappedBy = "library")
-    private List<CartItem> cart = new ArrayList<>();
-
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn (name = "game_id")
+    private Game game;
 }

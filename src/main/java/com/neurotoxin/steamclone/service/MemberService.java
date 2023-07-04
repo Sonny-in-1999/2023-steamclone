@@ -1,6 +1,7 @@
 package com.neurotoxin.steamclone.service;
 
 
+import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.Entity.Member;
 import com.neurotoxin.steamclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-
     // 유저 생성 메서드(회원 가입)
-    public Member join(Member member) {
+    public Member create(Member member) {
         return memberRepository.save(member);
     }
 
@@ -35,4 +35,7 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
+    // 유저 정보 수정
+    public void update(Member member) {
+    }
 }

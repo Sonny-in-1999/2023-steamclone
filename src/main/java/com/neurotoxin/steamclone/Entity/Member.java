@@ -3,7 +3,10 @@ package com.neurotoxin.steamclone.Entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -22,18 +25,18 @@ public class Member {
 
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "steam_id")
     private Steam steam;
 
-    @OneToMany(mappedBy = "member")
-    private List<Library> libraries;
+    @OneToOne (mappedBy = "member")
+    private Library library = new Library();
 
     @OneToMany(mappedBy = "member")
-    private List<WishListItem> wishListItems;
+    private List<WishListItem> wishList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<CartItem> cartItems;
+    private List<CartItem> cart = new ArrayList<>();
 
 
     //==기타 메서드==//

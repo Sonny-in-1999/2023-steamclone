@@ -21,22 +21,12 @@ public class Game {
 
     private int price;
 
-    @ManyToMany
-    @JoinTable(
-            name = "game_tag",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag")
-    )
-    private List<Tag> tags;
+    @OneToMany (mappedBy = "game")
+    private List<GameTag> tags = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "games")
-    private List<Library> libraries;
+    @OneToMany (mappedBy = "game")
+    private List<WishListGame> wishList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "games")
-    private List<WishListItem> wishListItems;
-
-    @ManyToMany(mappedBy = "games")
-    private List<CartItem> cartItems;
-
-
+    @OneToMany (mappedBy = "game")
+    private List<CartItemGame> cart = new ArrayList<>();
 }

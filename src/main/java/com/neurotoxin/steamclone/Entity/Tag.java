@@ -15,6 +15,5 @@ public class Tag {
     @Column(name = "tag_id")
     private Long id;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Game> games;
+    private String name;
 }
