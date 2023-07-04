@@ -5,16 +5,19 @@ import com.neurotoxin.steamclone.Entity.WishListGame;
 import com.neurotoxin.steamclone.repository.WishListItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WishListItemService {
 
     private final WishListItemRepository wishListItemRepository;
 
     // 찜 목록 게임 등록
+    @Transactional
     public WishListGame create(WishListGame wishListItem) {
         wishListItem.getWishListItem().getWishList().add(wishListItem);
         return wishListItemRepository.save(wishListItem);
@@ -31,6 +34,7 @@ public class WishListItemService {
     }
 
     // 찜 목록 게임 삭제
+    @Transactional
     public void delete(WishListGame wishListItem) {
         wishListItemRepository.delete(wishListItem);
     }

@@ -22,6 +22,6 @@ public class WishListItem {
     @JoinColumn (name = "member_id")
     private Member member;
 
-    @OneToMany (mappedBy = "wishlist_item")
+    @OneToMany (mappedBy = "wishListItem")
     private List<WishListGame> wishList = new ArrayList<>();
 }

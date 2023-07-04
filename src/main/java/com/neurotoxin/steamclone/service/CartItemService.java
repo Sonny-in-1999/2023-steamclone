@@ -5,16 +5,19 @@ import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
     // 장바구니 게임 생성
+    @Transactional
     public CartItemGame create(CartItemGame cartItem) {
         cartItem.getGame().getCart().add(cartItem);
         return cartItemRepository.save(cartItem);
@@ -31,6 +34,7 @@ public class CartItemService {
     }
 
     // 장바구니 게임 삭제
+    @Transactional
     public void delete(CartItemGame cartItem) {
         cartItemRepository.delete(cartItem);
     }

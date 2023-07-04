@@ -15,10 +15,14 @@ public class CartItemGame {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn (name = "member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn (name = "game_id")
+    @JoinColumn(name = "game_id")
     private Game game;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "cart_item_id")
+    private CartItem cartItem;
 }

@@ -18,10 +18,10 @@ public class Library {
     private Long id;
 
     @OneToOne
-    @JoinColumn (name = "member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany (mappedBy = "library")
+    @OneToMany(mappedBy = "library")
     private List<CartItem> cart = new ArrayList<>();
 
 }

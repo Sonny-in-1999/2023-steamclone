@@ -17,9 +17,9 @@ public class CartItem extends WishListItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn (name = "library_id")
+    @JoinColumn(name = "library_id")
     private Library library;
 
-    @OneToMany (mappedBy = "cartItem")
+    @OneToMany(mappedBy = "cartItem")
     private List<CartItemGame> cart = new ArrayList<>();
 }
