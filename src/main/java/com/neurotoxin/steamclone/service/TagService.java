@@ -18,12 +18,18 @@ public class TagService {
     // 태그 등록
     @Transactional
     public Tag create(Tag tag){
+        validateDupTag(tag);
         return tagRepository.save(tag);
     }
 
     // 태그 전건 조회
     public List<Tag> findAllTags() {
         return tagRepository.findAll();
+    }
+
+    // 태그 검색
+    public List<Tag> findTagByName(String tagName) {
+        return tagRepository.findTagByName(tagName);
     }
 
     // 태그 단일 조회
@@ -33,7 +39,36 @@ public class TagService {
 
     // 태그 삭제
     @Transactional
-    public void delete(Tag tag) {
-        tagRepository.delete(tag);
+    public void delete(Long tagId) {
+        Tag findTag = tagRepository.findTagById(tagId);
+
+        validateTag(findTag);
+        tagRepository.delete(findTag);
+    }
+
+    // 태그 수정
+    @Transactional
+    public void update(Long tagId, Tag newTag) {
+
+        Tag oldTag = tagRepository.findTagById(tagId);
+
+        oldTag.setName(newTag.getName());
+
+        tagRepository.save(oldTag);
+    }
+
+    // 중복, NULL 예외
+    private void validateTag(Tag givenTag) {
+        List<Tag> findTag = tagRepository.findTagByName(givenTag.getName());
+        if (findTag.isEmpty()) {
+            throw new NullPointerException("존재하지 않는 태그입니다.");
+        }
+    }
+
+    private void validateDupTag(Tag givenTag) {
+        List<Tag> findTag = tagRepository.findTagByName(givenTag.getName());
+        if (!findTag.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 태그입니다.");
+        }
     }
 }

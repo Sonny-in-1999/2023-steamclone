@@ -36,8 +36,7 @@ public class MemberApiTestController {
 
     @DeleteMapping("/api/test/member/{memberId}")
     public void deleteMember(@PathVariable Long memberId) {
-        Member member = memberService.findMemberById(memberId);
-        memberService.delete(member);
+        memberService.delete(memberId);
     }
 
     @PutMapping("/api/test/member/{memberId}")
