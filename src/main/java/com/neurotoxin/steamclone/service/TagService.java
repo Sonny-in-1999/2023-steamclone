@@ -1,5 +1,6 @@
 package com.neurotoxin.steamclone.service;
 
+import com.neurotoxin.steamclone.Entity.GameTag;
 import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,6 @@ public class TagService {
             throw new NullPointerException("존재하지 않는 태그입니다.");
         }
     }
-
     private void validateDupTag(Tag givenTag) {
         List<Tag> findTag = tagRepository.findTagByName(givenTag.getName());
         if (!findTag.isEmpty()) {

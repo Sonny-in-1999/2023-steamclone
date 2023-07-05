@@ -3,26 +3,49 @@ package com.neurotoxin.steamclone.service;
 
 import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.Entity.GameTag;
+import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.GameRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final TagService tagService;
+    private final GameTagService gameTagService;
+
+    public GameService(GameRepository gameRepository, TagService tagService, GameTagService gameTagService) {
+        this.gameRepository = gameRepository;
+        this.tagService = tagService;
+        this.gameTagService = gameTagService;
+    }
 
     // 게임 등록 메소드
     @Transactional
-    public Game create(Game game, GameTag gameTag){
-        game.getTags().add(gameTag);
+    public Game create(Game game, String ... tagName){
         validateDupGame(game);
-        return gameRepository.save(game);
+
+        List<Tag> findTags = new ArrayList<>();
+        // 생성자 주입을 통해 받은 리스트에서, 생성자 주입을 통해 GameTag 인스턴스를 형성합니다.
+        for (int i=0; i < tagName.length; i++) {            // PathVariables를 통해 String[]를 받은 경우, 하나씩 찾습니다
+            findTags = tagService.findTagByName(tagName[i]);
+        }
+        if (findTags.isEmpty()) {
+            throw new NullPointerException("해당하는 태그가 없습니다.");
+        } else {
+            for (int i=0; i<findTags.size(); i++) {
+                Tag tag = findTags.get(i);
+                GameTag gameTag = new GameTag(game, tag);      // 검색하여 나온 태그를 통해 게임과 태그 간의 관계를 형성할 인스턴스를 만들고
+                gameTagService.create(gameTag);                     // 그걸 주입 받은 생성자를 통해 저장합니다.
+            }
+            return gameRepository.save(game);
+        }
     }
 
     // 게임 전건 조회
@@ -45,6 +68,12 @@ public class GameService {
     public void delete(Long gameId) {
         Game findGame = gameRepository.findGameById(gameId);
         validateGame(findGame);
+
+        // 게임과 연결된 모든 태그 삭제
+        List<GameTag> findGameTags = gameRepository.findGameById(gameId).getTags();
+        for (GameTag gameTag : findGameTags) {
+            gameTagService.delete(gameTag);
+        }
         gameRepository.delete(findGame);
     }
 
@@ -62,16 +91,16 @@ public class GameService {
 
     // 중복, NULL 예외
     private void validateGame(Game givenGame) {
-        Game findGame = gameRepository.findGameById(givenGame.getId());
-        if (findGame == null) {
-            throw new IllegalStateException("존재하지 않는 게임입니다.");
+        List<Game> findGame = gameRepository.findGameByName(givenGame.getName());
+        if (findGame.isEmpty()) {
+            throw new NullPointerException("존재하지 않는 게임입니다.");
         }
     }
 
     private void validateDupGame(Game givenGame) {
-        Game findGame = gameRepository.findGameById(givenGame.getId());
-        if (findGame != null) {
-            throw new NullPointerException("이미 등록된 게임입니다.");
+        List<Game> findGame = gameRepository.findGameByName(givenGame.getName());
+        if (!findGame.isEmpty()) {
+            throw new IllegalStateException("이미 등록된 게임입니다.");
         }
     }
 

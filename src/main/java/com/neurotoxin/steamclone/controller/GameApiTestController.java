@@ -30,8 +30,8 @@ public class GameApiTestController {
     }
 
     @PostMapping("/api/test/game/add")
-    public Game addGame(@RequestBody Game devGame, GameTag tags) {
-        return gameService.create(devGame, tags);
+    public void addGame(@RequestBody Game devGame,String ... tagName ) {
+        gameService.create(devGame, tagName);
     }
 
     @DeleteMapping("/api/test/game/{gameId}")
