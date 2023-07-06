@@ -1,7 +1,5 @@
 package com.neurotoxin.steamclone.service;
 
-
-import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.Entity.Member;
 import com.neurotoxin.steamclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,15 +47,17 @@ public class MemberService {
 
     // 유저 삭제(회원 탈퇴)
     @Transactional
-    public void delete(Member member) {
-        validateMember(member);
-        memberRepository.delete(member);
+    public void delete(Long memberId) {
+        Member findMember = memberRepository.findMemberById(memberId);
+
+        validateMember(findMember);
+        memberRepository.delete(findMember);
     }
 
     private void validateMember(Member member) {
         Member findMember = memberRepository.findMemberById(member.getId());
         if (findMember == null) {
-            throw new IllegalStateException("존재하지 않는 회원입니다.");
+            throw new NullPointerException("존재하지 않는 회원입니다.");
         }
     }
 
