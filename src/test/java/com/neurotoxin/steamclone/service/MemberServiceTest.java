@@ -3,16 +3,12 @@ package com.neurotoxin.steamclone.service;
 
 import com.neurotoxin.steamclone.Entity.Grade;
 import com.neurotoxin.steamclone.Entity.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Transient;
 
 import java.util.List;
 
@@ -82,7 +78,7 @@ public class MemberServiceTest {
         List<Member> allMembers = memberService.findAllMembers();
         assertThat(allMembers.size()).isEqualTo(1);
 
-        memberService.delete(member);
+        memberService.delete(member.getId());
         List<Member> allMembersAfterDelete = memberService.findAllMembers();
         assertThat(allMembersAfterDelete).isEmpty();
     }
@@ -93,12 +89,9 @@ public class MemberServiceTest {
         //given
         Member member = new Member();
         member.setLoginName("member");
-        member.setEmail("email@gmail.com");
-
-        //when
 
         //then
-        assertThrows(IllegalStateException.class, () ->
-                memberService.findMemberById(2L));
+        assertThrows(NullPointerException.class, () ->
+                memberService.delete(999L));
     }
 }
