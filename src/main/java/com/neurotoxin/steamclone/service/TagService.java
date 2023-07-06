@@ -29,11 +29,11 @@ public class TagService {
     }
 
     // 태그 검색
-    public List<Tag> findTagByName(String tagName) {
+    public Tag findByName(String tagName) {
         return tagRepository.findTagByName(tagName);
     }
 
-    // 태그 단일 조회
+    // 태그 Id 단일 조회
     public Tag findTagById(Long tagId) {
         return tagRepository.findTagById(tagId);
     }
@@ -60,14 +60,14 @@ public class TagService {
 
     // 중복, NULL 예외
     private void validateTag(Tag givenTag) {
-        List<Tag> findTag = tagRepository.findTagByName(givenTag.getName());
-        if (findTag.isEmpty()) {
+        Tag findTag = tagRepository.findTagByName(givenTag.getName());
+        if (findTag == null) {
             throw new NullPointerException("존재하지 않는 태그입니다.");
         }
     }
     private void validateDupTag(Tag givenTag) {
-        List<Tag> findTag = tagRepository.findTagByName(givenTag.getName());
-        if (!findTag.isEmpty()) {
+        Tag findTag = tagRepository.findTagByName(givenTag.getName());
+        if (findTag != null) {
             throw new IllegalStateException("이미 존재하는 태그입니다.");
         }
     }

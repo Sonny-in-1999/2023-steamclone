@@ -8,5 +8,5 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<Tag, Long> {
     Tag findTagById(Long tagId);
 
-    List<Tag> findTagByName(String tagName);
+    Tag findTagByName(String tagName);
 }

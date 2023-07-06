@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -29,5 +30,4 @@ public class GameTag {
         this.game = game;
         this.tag = tag;
     }
-
 }

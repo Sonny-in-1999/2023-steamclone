@@ -25,7 +25,7 @@ public class GameApiTestController {
     }
 
     @GetMapping("/api/test/search/{gameName}")
-    public List<Game> findGameByName(@PathVariable String gameName) {
+    public Game findGameByName(@PathVariable String gameName) {
         return gameService.findGameByName(gameName);
     }
 

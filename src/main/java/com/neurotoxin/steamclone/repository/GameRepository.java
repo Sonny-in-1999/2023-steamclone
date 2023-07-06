@@ -9,6 +9,6 @@ import java.util.List;
 public interface GameRepository extends JpaRepository<Game, Long> {
     Game findGameById(Long gameId);
 
-    List<Game> findGameByName(String gameName);
+    Game findGameByName(String gameName);
 
 }

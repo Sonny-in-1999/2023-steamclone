@@ -25,8 +25,8 @@ public class TagApiTestController {
     }
 
     @GetMapping("/api/test/tag/search/{tagName}")
-    public List<Tag> findTagByName(@PathVariable String tagName) {
-        return tagService.findTagByName(tagName);
+    public Tag findTagByName(@PathVariable String tagName) {
+        return tagService.findByName(tagName);
     }
 
     @PostMapping("/api/test/tag/add")
