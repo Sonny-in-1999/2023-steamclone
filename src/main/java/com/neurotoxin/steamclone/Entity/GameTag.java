@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -15,6 +14,7 @@ public class GameTag {
 
     @Id
     @GeneratedValue
+    @Column(name = "game_tag_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

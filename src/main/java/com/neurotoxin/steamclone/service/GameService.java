@@ -2,7 +2,6 @@ package com.neurotoxin.steamclone.service;
 
 
 import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.GameTag;
 import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.GameRepository;
 import org.springframework.stereotype.Service;
@@ -32,15 +31,13 @@ public class GameService {
 
         List<Tag> findTags = new ArrayList<>();
         // 생성자 주입을 통해 받은 리스트에서, 생성자 주입을 통해 GameTag 인스턴스를 형성합니다.
-        for (int i=0; i < tagName.length; i++) {            // PathVariables를 통해 String[]를 받은 경우, 하나씩 찾습니다
-            findTags.add(tagService.findByName(tagName[i]));
+        for (String s : tagName) {            // PathVariables를 통해 String[]를 받은 경우, 하나씩 찾습니다
+            findTags.add(tagService.findByName(s));
         }
         if (findTags.isEmpty()) {
             throw new NullPointerException("해당하는 태그가 없습니다.");
         } else {
-            for (int i=0; i<findTags.size(); i++) {
-                Tag tag = findTags.get(i);
-                GameTag gameTag = new GameTag(game, tag);
+            for (Tag tag : findTags) {
                 gameTagService.create(game, tag);       // 검색하여 나온 태그를 통해 게임과 태그 간의 관계를 형성할 인스턴스를 만들고 그걸 주입 받은 생성자를 통해 저장합니다.
             }
             return gameRepository.save(game);

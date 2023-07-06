@@ -1,7 +1,6 @@
 package com.neurotoxin.steamclone.controller;
 
 import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.GameTag;
 import com.neurotoxin.steamclone.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

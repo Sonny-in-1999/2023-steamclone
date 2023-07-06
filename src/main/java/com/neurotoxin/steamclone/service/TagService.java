@@ -1,6 +1,5 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.GameTag;
 import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.TagRepository;
 import lombok.RequiredArgsConstructor;

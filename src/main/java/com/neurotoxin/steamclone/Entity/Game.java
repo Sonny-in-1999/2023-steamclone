@@ -8,8 +8,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.*;
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,7 +22,7 @@ public class Game {
 
     private int price;
 
-    @OneToMany (mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = EAGER)
+    @OneToMany (mappedBy = "game")
     private List<GameTag> tags = new ArrayList<>();
 
     @OneToMany (mappedBy = "game")

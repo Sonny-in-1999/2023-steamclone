@@ -30,7 +30,6 @@ public class GameServiceTest {
     public void addGame() throws Exception {
         // given
         Game game1 = new Game();
-        GameTag gameTag = new GameTag();
         Tag tag1 = new Tag();
         Tag tag2 = new Tag();
         tag1.setName("adult");
