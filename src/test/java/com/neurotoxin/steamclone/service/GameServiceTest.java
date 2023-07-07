@@ -104,4 +104,38 @@ public class GameServiceTest {
         assertThrows(NullPointerException.class, () -> gameService.delete(999L));
     }
 
+    @Test
+    @DisplayName("Game Update")
+    public void updateGame() throws Exception {
+        //given
+        Game game1 = new Game();
+        game1.setName("NMH RPG");
+        game1.setPrice(7);
+
+        Game newGame = new Game();
+        newGame.setName("NMH RPG - Idle Adventure Game");
+        newGame.setPrice(55);
+
+        Tag tag1 = new Tag();
+        Tag tag2 = new Tag();
+        Tag tag3 = new Tag();
+        Tag tag4 = new Tag();
+        tag1.setName("adult");
+        tag2.setName("nude");
+        tag3.setName("horror");
+        tag4.setName("simulation");
+        tagService.create(tag1);
+        tagService.create(tag2);
+        tagService.create(tag3);
+        tagService.create(tag4);
+        gameService.create(game1, "adult", "nude");
+        //when
+        gameService.update(game1.getId(), newGame, "adult", "horror", "simulation");
+        Game updatedGame = gameService.findGameById(game1.getId());
+        List<GameTag> updatedGameTags = gameTagService.getGameTags(updatedGame);
+        //then
+        assertThat(updatedGame.getName()).isEqualTo(newGame.getName());
+        assertThat(updatedGame.getPrice()).isEqualTo(newGame.getPrice());
+        assertThat(updatedGameTags.size()).isEqualTo(3);
+    }
 }

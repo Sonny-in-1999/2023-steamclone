@@ -89,6 +89,17 @@ public class TagServiceTest {
     @Test
     @DisplayName("Tag Update")
     public void updatedTag() throws Exception {
+        //given
+        Tag tag1 = new Tag();
+        Tag newTag = new Tag();
 
+        tag1.setName("adult");
+        newTag.setName("nude");
+        tagService.create(tag1);
+        // when
+        tagService.update(tag1.getId(),newTag);
+        Tag updatedTag = tagService.findTagById(tag1.getId());
+        // then
+        assertThat(updatedTag.getName()).isEqualTo(newTag.getName());
     }
 }

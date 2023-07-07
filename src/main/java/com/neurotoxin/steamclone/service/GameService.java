@@ -4,6 +4,7 @@ package com.neurotoxin.steamclone.service;
 import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.GameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,18 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GameService {
 
     private final GameRepository gameRepository;
     private final TagService tagService;
     private final GameTagService gameTagService;
-
-    public GameService(GameRepository gameRepository, TagService tagService, GameTagService gameTagService) {
-        this.gameRepository = gameRepository;
-        this.tagService = tagService;
-        this.gameTagService = gameTagService;
-    }
 
     // 게임 등록 메소드
     @Transactional
@@ -72,12 +68,23 @@ public class GameService {
 
     // 게임 정보 수정
     @Transactional
-    public void update(Long gameId, Game newGame) {
+    public void update(Long gameId, Game newGame, String ... tagName) {
         Game oldGame = gameRepository.findGameById(gameId);
 
         oldGame.setName(newGame.getName());
         oldGame.setPrice(newGame.getPrice());
-        oldGame.setTags(newGame.getTags());
+
+        List<Tag> findTags = new ArrayList<>();
+        for (String s : tagName) {            // PathVariables를 통해 String[]를 받은 경우, 하나씩 찾습니다
+            findTags.add(tagService.findByName(s));
+        }
+        // 게임 생성과는 달리, 태그가 없는 경우 기존 게임에 등록된 태그를 사용하면 됨.
+        if (!findTags.isEmpty()) {                      // oldGame.setTags()의 역할을 하는 로직
+            gameTagService.disconnect(oldGame);
+            for (Tag tag : findTags) {
+                gameTagService.create(oldGame, tag);
+            }
+        }
 
         gameRepository.save(oldGame);
     }
