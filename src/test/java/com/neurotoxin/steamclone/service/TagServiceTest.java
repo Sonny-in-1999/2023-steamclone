@@ -85,4 +85,10 @@ public class TagServiceTest {
         assertThrows(NullPointerException.class, () ->
                 tagService.delete(999L));
     }
+
+    @Test
+    @DisplayName("Tag Update")
+    public void updatedTag() throws Exception {
+
+    }
 }

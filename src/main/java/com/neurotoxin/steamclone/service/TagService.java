@@ -49,7 +49,6 @@ public class TagService {
     // 태그 수정
     @Transactional
     public void update(Long tagId, Tag newTag) {
-
         Tag oldTag = tagRepository.findTagById(tagId);
 
         oldTag.setName(newTag.getName());

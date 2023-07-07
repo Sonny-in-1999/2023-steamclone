@@ -1,5 +1,6 @@
 package com.neurotoxin.steamclone.service;
 
+import com.neurotoxin.steamclone.Entity.Grade;
 import com.neurotoxin.steamclone.Entity.Member;
 import com.neurotoxin.steamclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,7 @@ public class MemberService {
         oldMember.setNickName(newMember.getNickName());
         oldMember.setPassword(newMember.getPassword());
         oldMember.setPhoneNumber(newMember.getPhoneNumber());
+        oldMember.setGrade(newMember.getGrade());
 
         memberRepository.save(oldMember);
     }

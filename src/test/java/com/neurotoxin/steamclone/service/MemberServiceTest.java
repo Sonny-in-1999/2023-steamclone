@@ -22,7 +22,6 @@ public class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-
     @Test
     @DisplayName("회원 생성")
     @Transactional
@@ -93,5 +92,32 @@ public class MemberServiceTest {
         //then
         assertThrows(NullPointerException.class, () ->
                 memberService.delete(999L));
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    public void updateMember() throws Exception {
+        //given
+        Member member1 = new Member();
+        member1.setEmail("example1@gmail.com");
+        member1.setPassword("password123");
+        member1.setPhoneNumber("010-1234-5678");
+        member1.setGrade(Grade.DEVELOPER);
+        memberService.create(member1);
+
+        Member newMember = new Member();
+        newMember.setEmail("NMH@naver.com");
+        newMember.setPassword("0523");
+        newMember.setPhoneNumber("010-0523-0523");
+        newMember.setGrade(Grade.USER);
+        assertThat(newMember.getEmail()).isEqualTo("NMH@naver.com");
+        //when
+        memberService.update(member1.getId(), newMember);
+        Member updatedMember = memberService.findMemberById(member1.getId());
+        //then
+        assertThat(updatedMember.getEmail()).isEqualTo(newMember.getEmail());
+        assertThat(updatedMember.getPassword()).isEqualTo(newMember.getPassword());
+        assertThat(updatedMember.getPhoneNumber()).isEqualTo(newMember.getPhoneNumber());
+        assertThat(updatedMember.getGrade()).isEqualTo(newMember.getGrade());
     }
 }

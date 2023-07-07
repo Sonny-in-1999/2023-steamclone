@@ -96,5 +96,4 @@ public class GameService {
             throw new IllegalStateException("이미 등록된 게임입니다.");
         }
     }
-
 }
