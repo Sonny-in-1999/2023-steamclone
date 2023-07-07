@@ -1,10 +1,10 @@
 package com.neurotoxin.steamclone.service;
 
 import com.neurotoxin.steamclone.Entity.Tag;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,6 +20,7 @@ public class TagServiceTest {
 
     @Test
     @DisplayName("Create Tag")
+    @DirtiesContext
     @Transactional
     public void createTag() throws Exception {
         //given
@@ -27,7 +28,7 @@ public class TagServiceTest {
         Tag tag2 = new Tag();
 
         tag1.setName("adult");
-        tag1.setName("nude");
+        tag2.setName("nude");
 
         // when
         tagService.create(tag1);
@@ -40,6 +41,7 @@ public class TagServiceTest {
 
     @Test
     @DisplayName("Delete Tag")
+    @DirtiesContext
     public void deleteTag() throws Exception {
         //given
         Tag tag1 = new Tag();
@@ -60,6 +62,7 @@ public class TagServiceTest {
 
     @Test
     @DisplayName("Duplicate Tag")
+    @DirtiesContext
     public void validateDupTag() throws Exception {
         //given
         Tag tag1 = new Tag();
@@ -78,16 +81,18 @@ public class TagServiceTest {
 
     @Test
     @DisplayName("Unknown Tag")
+    @DirtiesContext
     public void unknownTag() throws Exception {
         Tag tag1 = new Tag();
         tag1.setName("adult");
 
         assertThrows(NullPointerException.class, () ->
-                tagService.delete(999L));
+                tagService.findTagByName("nude"));
     }
 
     @Test
     @DisplayName("Tag Update")
+    @DirtiesContext
     public void updatedTag() throws Exception {
         //given
         Tag tag1 = new Tag();

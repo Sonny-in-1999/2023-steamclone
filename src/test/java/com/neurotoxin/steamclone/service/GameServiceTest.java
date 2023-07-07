@@ -1,12 +1,11 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.GameTag;
-import com.neurotoxin.steamclone.Entity.Tag;
+import com.neurotoxin.steamclone.Entity.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,9 +22,14 @@ public class GameServiceTest {
     TagService tagService;
     @Autowired
     GameTagService gameTagService;
+    @Autowired
+    WishListGameService wishListGameService;
+    @Autowired
+    CartItemGameService cartItemGameService;
 
     @Test
     @DisplayName("Add Game")
+    @DirtiesContext
     @Transactional
     public void addGame() throws Exception {
         // given
@@ -49,9 +53,10 @@ public class GameServiceTest {
 
     @Test
     @DisplayName("Delete Game")
+    @DirtiesContext
     @Transactional
     public void deleteGame() throws Exception {
-        //given
+        // 게임 생성(태그 포함)
         Game game1 = new Game();
         game1.setName("NMH Adventure");
         Tag tag1 = new Tag();
@@ -60,21 +65,31 @@ public class GameServiceTest {
         tag2.setName("nude");
         tagService.create(tag1);
         tagService.create(tag2);
-
         gameService.create(game1, "adult", "nude");
+
+        // 게임이 태그와 함께 성공적으로 DB에 저장
         List<Game> allGames = gameService.findAllGames();
         assertThat(allGames.size()).isEqualTo(1);
         List<GameTag> allTags = gameTagService.getGameTags(game1);
         assertThat(allTags.size()).isEqualTo(2);
-        //when
+
+        // DB에서 게임이 정상적으로 삭제
         gameService.delete(game1.getId());
         List<Game> allGamesAfDelete = gameService.findAllGames();
-        //then
         assertThat(allGamesAfDelete.size()).isEqualTo(0);
+
+        // 게임 삭제 후 중간테이블들의 fk가(중간테이블이 갖고 있는 해당 게임의 정보가) 정상적으로 삭제
+        List<GameTag> gameTags = gameTagService.getGameTags(game1);
+        List<WishListGame> wishListGames = wishListGameService.getWishListGames(game1);
+        List<CartItemGame> cartItemGames = cartItemGameService.getCartItemGame(game1);
+        assertThat(gameTags.size()).isEqualTo(0);
+        assertThat(wishListGames.size()).isEqualTo(0);
+        assertThat(cartItemGames.size()).isEqualTo(0);
     }
 
     @Test
     @DisplayName("Validate Duplicate")
+    @DirtiesContext
     @Transactional
     public void validateDupGame() throws Exception {
         //given
@@ -95,6 +110,7 @@ public class GameServiceTest {
 
     @Test
     @DisplayName("Validate NULL")
+    @DirtiesContext
     @Transactional
     public void unknownGame() throws Exception {
         //given
@@ -106,6 +122,7 @@ public class GameServiceTest {
 
     @Test
     @DisplayName("Game Update")
+    @DirtiesContext
     public void updateGame() throws Exception {
         //given
         Game game1 = new Game();

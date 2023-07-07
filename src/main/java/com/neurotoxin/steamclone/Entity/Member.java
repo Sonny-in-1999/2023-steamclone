@@ -1,9 +1,6 @@
 package com.neurotoxin.steamclone.Entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Member {
 
@@ -47,34 +45,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<CartItem> cart = new ArrayList<>();
 
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setGrade(Grade grade) {
-        this.grade = grade;
-    }
-
-    public void setLibrary(Library library) {
-        this.library = library;
-    }
 
     //==기타 메서드==//
 

@@ -2,6 +2,7 @@ package com.neurotoxin.steamclone.Entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class WishListItem {
 
     @Id
@@ -24,4 +26,9 @@ public class WishListItem {
 
     @OneToMany (mappedBy = "wishListItem")
     private List<WishListGame> wishList = new ArrayList<>();
+
+    public WishListItem(Member member, List<WishListGame> wishList) {
+        this.member = member;
+        this.wishList = wishList;
+    }
 }

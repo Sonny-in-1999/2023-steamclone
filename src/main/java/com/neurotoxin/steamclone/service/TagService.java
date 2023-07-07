@@ -28,8 +28,15 @@ public class TagService {
     }
 
     // 태그 검색
-    public Tag findByName(String tagName) {
-        return tagRepository.findTagByName(tagName);
+    public Tag findTagByName(String tagName) {
+        try {
+            Tag findTag = tagRepository.findTagByName(tagName);
+            validateTag(findTag);
+            return findTag;
+        } catch (NullPointerException e) {
+            System.out.printf("%s 태그가 존재하지 않습니다.", tagName);
+            throw e;
+        }
     }
 
     // 태그 Id 단일 조회

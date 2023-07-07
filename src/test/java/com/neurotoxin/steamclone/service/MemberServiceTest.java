@@ -1,15 +1,16 @@
 package com.neurotoxin.steamclone.service;
 
 
-import com.neurotoxin.steamclone.Entity.Grade;
-import com.neurotoxin.steamclone.Entity.Member;
+import com.neurotoxin.steamclone.Entity.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -21,9 +22,20 @@ public class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+    @Autowired
+    WishListGameService wishListGameService;
+    @Autowired
+    WishListItemService wishListItemService;
+    @Autowired
+    GameService gameService;
+    @Autowired
+    CartItemService cartItemService;
+    @Autowired
+    CartItemGameService cartItemGameService;
 
     @Test
     @DisplayName("회원 생성")
+    @DirtiesContext
     @Transactional
     public void createMember() throws Exception {
         //given
@@ -51,6 +63,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("중복 회원 검증")
+    @DirtiesContext
     public void validateDupMember() throws Exception {
         //given
         Member member1 = new Member();
@@ -67,6 +80,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원 탈퇴")
+    @DirtiesContext
     public void memberDelete() throws Exception {
 
         Member member = new Member();
@@ -84,6 +98,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 회원 검증")
+    @DirtiesContext
     public void unknownMember() throws Exception {
         //given
         Member member = new Member();
@@ -96,6 +111,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원 정보 수정")
+    @DirtiesContext
     public void updateMember() throws Exception {
         //given
         Member member1 = new Member();
@@ -119,5 +135,63 @@ public class MemberServiceTest {
         assertThat(updatedMember.getPassword()).isEqualTo(newMember.getPassword());
         assertThat(updatedMember.getPhoneNumber()).isEqualTo(newMember.getPhoneNumber());
         assertThat(updatedMember.getGrade()).isEqualTo(newMember.getGrade());
+    }
+
+    @Test
+    @DisplayName("멤버의 찜 목록에 게임 추가")
+    @DirtiesContext
+    @Transactional
+    public void memberAddWishListItem() throws Exception {
+        //given
+        // 게임과 멤버를 하나씩 생성해서 DB에 저장
+        Member member = new Member();
+        memberService.create(member);
+        List<WishListGame> wishListGames = new ArrayList<>();
+
+        Game game = new Game();
+        Tag tag = new Tag();
+        tag.setName("adult");
+        Game game1 = gameService.create(game, String.valueOf(tag));
+        WishListItem wishListItem = new WishListItem(member, wishListGames);
+        WishListGame wishListGame = new WishListGame(game, wishListItem);
+
+        //when
+        // 멤버의 찜목록에 게임을 추가
+        wishListItemService.create(wishListGame);
+        Member findMember = memberService.findMemberById(member.getId());
+        List<WishListItem> wishListItems = new ArrayList<>();
+        wishListItems.add(wishListItem);
+        findMember.setWishList(wishListItems);
+
+        //then
+        assertThat(wishListItems).isEqualTo(findMember.getWishList());
+    }
+
+    @Test
+    @DisplayName("멤버의 장바구니에 게임 추가")
+    @DirtiesContext
+    @Transactional
+    public void memberAddCartItem() throws Exception {
+        //given
+        // 게임과 멤버를 하나씩 생성해서 DB에 저장
+        Member member = new Member();
+        memberService.create(member);
+        List<WishListGame> wishListGames = new ArrayList<>();
+
+        //when
+        // 멤버의 장바구니에 게임 추가
+        Game game = new Game();
+        Tag tag = new Tag();
+        tag.setName("adult");
+        Game savedGame = gameService.create(game, String.valueOf(tag));
+        CartItem cartItem = new CartItem();
+        CartItemGame cartItemGame = cartItemGameService.create(savedGame, cartItem);
+        Member findMember = memberService.findMemberById(member.getId());
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.add(cartItem);
+        member.setCart(cartItems);
+
+        //then
+        assertThat(cartItems).isEqualTo(member.getCart());
     }
 }
