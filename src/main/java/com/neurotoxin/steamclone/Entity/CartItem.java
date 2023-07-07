@@ -22,4 +22,13 @@ public class CartItem extends WishListItem {
 
     @OneToMany(mappedBy = "cartItem")
     private List<CartItemGame> cart = new ArrayList<>();
+
+    public CartItem(Member member, List<WishListGame> wishList) {
+        super(member, wishList);
+    }
+
+    public CartItem() {
+        super();
+    }
+
 }
