@@ -24,8 +24,7 @@ public class GameTagService {
         return gameTagRepository.save(gameTag);
     }
 
-    // Searching All GameTag with SINGLE Game
-    @Transactional
+    // Searching All GameTag with Single Game
     public List<GameTag> getGameTags(Game game) {
         return gameTagRepository.findGameTagByGame(game);
     }
@@ -36,7 +35,7 @@ public class GameTagService {
         gameTagRepository.delete(gameTag);
     }
 
-    // Delete Connected All Table with SINGLE Game
+    // Delete Connected All Table with Single Game
     @Transactional
     public void disconnect(Game game) {
         List<GameTag> connectedAllTags = getGameTags(game);

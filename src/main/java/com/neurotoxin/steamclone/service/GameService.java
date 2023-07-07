@@ -4,6 +4,7 @@ package com.neurotoxin.steamclone.service;
 import com.neurotoxin.steamclone.Entity.Game;
 import com.neurotoxin.steamclone.Entity.Tag;
 import com.neurotoxin.steamclone.repository.GameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +13,14 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class GameService {
 
     private final GameRepository gameRepository;
     private final TagService tagService;
     private final GameTagService gameTagService;
-
-    public GameService(GameRepository gameRepository, TagService tagService, GameTagService gameTagService) {
-        this.gameRepository = gameRepository;
-        this.tagService = tagService;
-        this.gameTagService = gameTagService;
-    }
+    private final WishListGameService wishListGameService;
+    private final CartItemGameService cartItemGameService;
 
     // 게임 등록 메소드
     @Transactional
@@ -65,8 +63,11 @@ public class GameService {
         Game findGame = gameRepository.findGameById(gameId);
         validateGame(findGame);
 
-        // 중간 테이블에서 연결된 GameTag를 전부 삭제합니다.
+        // Game 테이블과 연결된 중간테이블들의 fk 삭제
         gameTagService.disconnect(findGame);
+        wishListGameService.disconnect(findGame);
+        cartItemGameService.disconnect(findGame);
+
         gameRepository.delete(findGame);
     }
 
