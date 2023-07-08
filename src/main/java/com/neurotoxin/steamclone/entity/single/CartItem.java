@@ -41,5 +41,4 @@ public class CartItem {
     public void setStatus(Status status) {
         this.status = status;
     }
-
 }

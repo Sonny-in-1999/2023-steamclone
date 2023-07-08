@@ -43,5 +43,4 @@ public class WishListItemService {
     public void delete(WishListItem wishListItem) {
         wishListItemRepository.delete(wishListItem);
     }
-
 }
