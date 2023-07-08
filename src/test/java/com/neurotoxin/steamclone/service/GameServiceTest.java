@@ -1,6 +1,15 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.*;
+import com.neurotoxin.steamclone.entity.connect.CartItemGame;
+import com.neurotoxin.steamclone.entity.connect.GameTag;
+import com.neurotoxin.steamclone.entity.connect.WishListGame;
+import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.single.Tag;
+import com.neurotoxin.steamclone.service.connect.CartItemGameService;
+import com.neurotoxin.steamclone.service.connect.GameTagService;
+import com.neurotoxin.steamclone.service.connect.WishListGameService;
+import com.neurotoxin.steamclone.service.single.GameService;
+import com.neurotoxin.steamclone.service.single.TagService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

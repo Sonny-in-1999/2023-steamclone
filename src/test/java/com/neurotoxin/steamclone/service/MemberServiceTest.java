@@ -1,7 +1,11 @@
 package com.neurotoxin.steamclone.service;
 
 
-import com.neurotoxin.steamclone.Entity.*;
+import com.neurotoxin.steamclone.entity.connect.CartItemGame;
+import com.neurotoxin.steamclone.entity.single.*;
+import com.neurotoxin.steamclone.service.connect.CartItemGameService;
+import com.neurotoxin.steamclone.service.connect.WishListGameService;
+import com.neurotoxin.steamclone.service.single.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,27 +158,34 @@ public class MemberServiceTest {
         // 게임과 멤버를 하나씩 생성해서 DB에 저장
         Member member = new Member();
         memberService.register(member);
-        List<WishListGame> wishListGames = new ArrayList<>();
 
-        Game game = new Game();
+        Game game1 = new Game();
+        game1.setPrice(10);
+        game1.setName("NMH");
+        Game game2 = new Game();
+        game2.setPrice(69);
+        game2.setName("Unji");
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);
+        gameService.create(game1, tag.getName());
+        gameService.create(game2, tag.getName());
 
-        Game game1 = gameService.create(game, tag.getName());
-        WishListItem wishListItem = new WishListItem(member, wishListGames);
-        WishListGame wishListGame = new WishListGame(game, wishListItem);
+        WishListItem wishListItem1 = new WishListItem();
+        WishListItem wishListItem2 = new WishListItem();
 
         //when
-        // 멤버의 찜목록에 게임을 추가
-        wishListItemService.create(wishListGame);
-        Member findMember = memberService.findMemberById(member.getId());
-        List<WishListItem> wishListItems = new ArrayList<>();
-        wishListItems.add(wishListItem);
-        findMember.setWishList(wishListItems);
+        wishListGameService.create(game1, wishListItem1);
+        wishListGameService.create(game2, wishListItem2);        // 게임 - 찜목록 연동
+        wishListItemService.create(member, wishListItem1);
+        wishListItemService.create(member, wishListItem2);       // 찜 목록 - 멤버 연동
 
         //then
-        assertThat(wishListItems).isEqualTo(findMember.getWishList());
+        assertThat(member.getWishList().size()).isEqualTo(2);
+        assertThat(member.getWishList().get(0)).isEqualTo(wishListItem1);
+        assertThat(member.getWishList().get(1)).isEqualTo(wishListItem2);
+        assertThat(member.getWishList().get(0).getMember()).isEqualTo(member);
+        assertThat(member.getWishList().get(1).getMember()).isEqualTo(member);
     }
 
     @Test
@@ -182,27 +193,35 @@ public class MemberServiceTest {
     @DirtiesContext
     @Transactional
     public void memberAddCartItem() throws Exception {
-        //given
-        // 게임과 멤버를 하나씩 생성해서 DB에 저장
         Member member = new Member();
         memberService.register(member);
 
-        //when
-        // 멤버의 장바구니에 게임 추가
-        Game game = new Game();
+        Game game1 = new Game();
+        game1.setPrice(10);
+        game1.setName("NMH");
+        Game game2 = new Game();
+        game2.setPrice(69);
+        game2.setName("Unji");
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);
+        gameService.create(game1, tag.getName());
+        gameService.create(game2, tag.getName());
 
-        Game savedGame = gameService.create(game, tag.getName());
-        CartItem cartItem = new CartItem();
-        CartItemGame cartItemGame = cartItemGameService.create(savedGame, cartItem);
-        Member findMember = memberService.findMemberById(member.getId());
-        List<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(cartItem);
-        member.setCart(cartItems);
+        CartItem cartItem1 = new CartItem();
+        CartItem cartItem2 = new CartItem();
+        //when
+        // 멤버의 장바구니에 게임 추가
+        cartItemGameService.create(game1, cartItem1);
+        cartItemGameService.create(game2, cartItem2);
+        cartItemService.create(member, cartItem1);
+        cartItemService.create(member, cartItem2);
 
         //then
-        assertThat(cartItems).isEqualTo(member.getCart());
+        assertThat(member.getCart().size()).isEqualTo(2);
+        assertThat(member.getCart().get(0)).isEqualTo(cartItem1);
+        assertThat(member.getCart().get(1)).isEqualTo(cartItem2);
+        assertThat(member.getCart().get(0).getMember()).isEqualTo(member);
+        assertThat(member.getCart().get(1).getMember()).isEqualTo(member);
     }
 }

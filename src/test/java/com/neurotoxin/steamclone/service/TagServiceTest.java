@@ -1,6 +1,7 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.Tag;
+import com.neurotoxin.steamclone.entity.single.Tag;
+import com.neurotoxin.steamclone.service.single.TagService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
