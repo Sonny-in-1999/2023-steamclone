@@ -1,4 +1,4 @@
-package com.neurotoxin.steamclone.Entity;
+package com.neurotoxin.steamclone.entity.single;
 
 import lombok.*;
 
@@ -11,7 +11,6 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Member {
 
@@ -45,4 +44,28 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CartItem> cart = new ArrayList<>();
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 }

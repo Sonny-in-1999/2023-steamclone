@@ -1,9 +1,9 @@
-package com.neurotoxin.steamclone.service;
+package com.neurotoxin.steamclone.service.single;
 
 import com.neurotoxin.steamclone.entity.single.CartItem;
 import com.neurotoxin.steamclone.entity.single.Member;
-import com.neurotoxin.steamclone.repository.CartItemRepository;
-import com.neurotoxin.steamclone.repository.MemberRepository;
+import com.neurotoxin.steamclone.repository.single.CartItemRepository;
+import com.neurotoxin.steamclone.repository.single.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +20,10 @@ public class CartItemService {
 
     // 멤버의 장바구니에 게임 추가(멤버와 장바구니 연동)
     @Transactional
-    public void create(Member member, List<CartItem> cartItem) {
+    public void create(Member member, CartItem cartItem) {
         Member findMember = memberRepository.findMemberById(member.getId());
-        for (CartItem item : cartItem) {
-            findMember.getCart().add(item);
-            item.setMember(member);
-        }
+        findMember.getCart().add(cartItem);
+        cartItem.setMember(findMember);
     }
 
     // 장바구니 게임 전건 조회

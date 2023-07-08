@@ -1,9 +1,12 @@
-package com.neurotoxin.steamclone.service;
+package com.neurotoxin.steamclone.service.single;
 
 
 import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Tag;
-import com.neurotoxin.steamclone.repository.GameRepository;
+import com.neurotoxin.steamclone.repository.single.GameRepository;
+import com.neurotoxin.steamclone.service.connect.CartItemGameService;
+import com.neurotoxin.steamclone.service.connect.GameTagService;
+import com.neurotoxin.steamclone.service.connect.WishListGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

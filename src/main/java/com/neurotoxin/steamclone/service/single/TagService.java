@@ -1,7 +1,7 @@
-package com.neurotoxin.steamclone.service;
+package com.neurotoxin.steamclone.service.single;
 
 import com.neurotoxin.steamclone.entity.single.Tag;
-import com.neurotoxin.steamclone.repository.TagRepository;
+import com.neurotoxin.steamclone.repository.single.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,7 @@
-package com.neurotoxin.steamclone.Entity;
+package com.neurotoxin.steamclone.entity.single;
 
 
+import com.neurotoxin.steamclone.entity.connect.WishListGame;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +28,7 @@ public class WishListItem {
     @OneToMany (mappedBy = "wishListItem")
     private List<WishListGame> wishList = new ArrayList<>();
 
-    public WishListItem(Member member, List<WishListGame> wishList) {
+    public void setMember(Member member) {
         this.member = member;
-        this.wishList = wishList;
     }
 }

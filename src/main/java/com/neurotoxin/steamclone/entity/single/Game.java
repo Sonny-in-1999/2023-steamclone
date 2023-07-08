@@ -1,6 +1,9 @@
-package com.neurotoxin.steamclone.Entity;
+package com.neurotoxin.steamclone.entity.single;
 
 
+import com.neurotoxin.steamclone.entity.connect.CartItemGame;
+import com.neurotoxin.steamclone.entity.connect.GameTag;
+import com.neurotoxin.steamclone.entity.connect.WishListGame;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

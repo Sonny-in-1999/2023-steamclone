@@ -1,4 +1,4 @@
-package com.neurotoxin.steamclone.Entity;
+package com.neurotoxin.steamclone.entity.single;
 
 
 import lombok.Getter;
