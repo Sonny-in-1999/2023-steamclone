@@ -17,10 +17,6 @@ public class CartItemGame {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
 
@@ -29,12 +25,6 @@ public class CartItemGame {
     private CartItem cartItem;
 
     public CartItemGame(Game game, CartItem cartItem) {
-        this.game = game;
-        this.cartItem = cartItem;
-    }
-
-    public CartItemGame(Member member, Game game, CartItem cartItem) {
-        this.member = member;
         this.game = game;
         this.cartItem = cartItem;
     }

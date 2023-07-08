@@ -1,6 +1,5 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.Grade;
 import com.neurotoxin.steamclone.Entity.Member;
 import com.neurotoxin.steamclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +14,21 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final LibraryService libraryService;
 
-    // 유저 생성 메서드(회원 가입)
+    // 멤버 객체 생성
     @Transactional
     public Member create(Member member) {
         validateDuplicateMember(member);
-        member.setLibrary(null);
         return memberRepository.save(member);
+    }
+
+    // 회원 가입
+    @Transactional
+    public Member register(Member member) {
+        create(member);
+        member.getLibrary().setMember(member);
+        return member;
     }
 
     private void validateDuplicateMember(Member member) {
@@ -52,6 +59,7 @@ public class MemberService {
         Member findMember = memberRepository.findMemberById(memberId);
 
         validateMember(findMember);
+        libraryService.delete(findMember.getLibrary());
         memberRepository.delete(findMember);
     }
 

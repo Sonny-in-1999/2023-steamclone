@@ -23,11 +23,15 @@ public class MemberServiceTest {
     @Autowired
     MemberService memberService;
     @Autowired
+    LibraryService libraryService;
+    @Autowired
     WishListGameService wishListGameService;
     @Autowired
     WishListItemService wishListItemService;
     @Autowired
     GameService gameService;
+    @Autowired
+    TagService tagService;
     @Autowired
     CartItemService cartItemService;
     @Autowired
@@ -54,11 +58,15 @@ public class MemberServiceTest {
         member2.setGrade(Grade.USER);
 
         //when
-        memberService.create(member1);
-        memberService.create(member2);
+        memberService.register(member1);
+        memberService.register(member2);
         //then
         assertThat(member1).isEqualTo(memberService.findMemberById(member1.getId()));
         assertThat(member2).isEqualTo(memberService.findMemberById(member2.getId()));
+        assertThat(member1.getLibrary().getId()).isEqualTo(2);
+        assertThat(member1.getLibrary().getMember().getId()).isEqualTo(1);
+        assertThat(member2.getLibrary().getId()).isEqualTo(4);
+        assertThat(member2.getLibrary().getMember().getId()).isEqualTo(3);
     }
 
     @Test
@@ -72,10 +80,10 @@ public class MemberServiceTest {
         Member member2 = new Member();
         member2.setLoginName("login-example1");
         //when
-        memberService.create(member1);
+        memberService.register(member1);
         //then
         assertThrows(IllegalStateException.class, () ->
-                memberService.create(member2));
+                memberService.register(member2));
     }
 
     @Test
@@ -87,7 +95,7 @@ public class MemberServiceTest {
         member.setNickName("nickname1");
         member.setLoginName("loginName1");
 
-        memberService.create(member);
+        memberService.register(member);
         List<Member> allMembers = memberService.findAllMembers();
         assertThat(allMembers.size()).isEqualTo(1);
 
@@ -119,7 +127,7 @@ public class MemberServiceTest {
         member1.setPassword("password123");
         member1.setPhoneNumber("010-1234-5678");
         member1.setGrade(Grade.DEVELOPER);
-        memberService.create(member1);
+        memberService.register(member1);
 
         Member newMember = new Member();
         newMember.setEmail("NMH@naver.com");
@@ -145,13 +153,15 @@ public class MemberServiceTest {
         //given
         // 게임과 멤버를 하나씩 생성해서 DB에 저장
         Member member = new Member();
-        memberService.create(member);
+        memberService.register(member);
         List<WishListGame> wishListGames = new ArrayList<>();
 
         Game game = new Game();
         Tag tag = new Tag();
         tag.setName("adult");
-        Game game1 = gameService.create(game, String.valueOf(tag));
+        tagService.create(tag);
+
+        Game game1 = gameService.create(game, tag.getName());
         WishListItem wishListItem = new WishListItem(member, wishListGames);
         WishListGame wishListGame = new WishListGame(game, wishListItem);
 
@@ -175,15 +185,16 @@ public class MemberServiceTest {
         //given
         // 게임과 멤버를 하나씩 생성해서 DB에 저장
         Member member = new Member();
-        memberService.create(member);
-        List<WishListGame> wishListGames = new ArrayList<>();
+        memberService.register(member);
 
         //when
         // 멤버의 장바구니에 게임 추가
         Game game = new Game();
         Tag tag = new Tag();
         tag.setName("adult");
-        Game savedGame = gameService.create(game, String.valueOf(tag));
+        tagService.create(tag);
+
+        Game savedGame = gameService.create(game, tag.getName());
         CartItem cartItem = new CartItem();
         CartItemGame cartItemGame = cartItemGameService.create(savedGame, cartItem);
         Member findMember = memberService.findMemberById(member.getId());

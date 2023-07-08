@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -36,7 +37,7 @@ public class Member {
     @JoinColumn(name = "steam_id")
     private Steam steam;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
     private Library library = new Library();
 
     @OneToMany(mappedBy = "member")
@@ -44,8 +45,4 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CartItem> cart = new ArrayList<>();
-
-
-    //==기타 메서드==//
-
 }

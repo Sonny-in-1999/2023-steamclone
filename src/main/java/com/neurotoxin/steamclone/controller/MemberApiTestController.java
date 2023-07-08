@@ -31,7 +31,7 @@ public class MemberApiTestController {
 
     @PostMapping("/api/test/member")
     public Member joinMember(@RequestBody Member member) {
-        return memberService.create(member);
+        return memberService.register(member);
     }
 
     @DeleteMapping("/api/test/member/{memberId}")

@@ -22,6 +22,10 @@ public class Library {
     private Member member;
 
     @OneToMany(mappedBy = "library")
-    private List<CartItem> cart = new ArrayList<>();
+    private List<CartItem> purchasedGame = new ArrayList<>();
 
+    // For connect Table Library - Member
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }
