@@ -1,7 +1,9 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.CartItemGame;
+import com.neurotoxin.steamclone.entity.single.CartItem;
+import com.neurotoxin.steamclone.entity.single.Member;
 import com.neurotoxin.steamclone.repository.CartItemRepository;
+import com.neurotoxin.steamclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,27 +16,31 @@ import java.util.List;
 public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
+    private final MemberRepository memberRepository;
 
-    // 장바구니 게임 생성
+    // 멤버의 장바구니에 게임 추가(멤버와 장바구니 연동)
     @Transactional
-    public CartItemGame create(CartItemGame cartItem) {
-        cartItem.getGame().getCart().add(cartItem);
-        return cartItemRepository.save(cartItem);
+    public void create(Member member, List<CartItem> cartItem) {
+        Member findMember = memberRepository.findMemberById(member.getId());
+        for (CartItem item : cartItem) {
+            findMember.getCart().add(item);
+            item.setMember(member);
+        }
     }
 
     // 장바구니 게임 전건 조회
-    public List<CartItemGame> findAllCartItems() {
+    public List<CartItem> findAllCartItems() {
         return cartItemRepository.findAll();
     }
 
     // 장바구니 게임 단일 조회
-    public CartItemGame findCartItemById(Long cartItemId) {
+    public CartItem findCartItemById(Long cartItemId) {
         return cartItemRepository.findCartItemById(cartItemId);
     }
 
     // 장바구니 게임 삭제
     @Transactional
-    public void delete(CartItemGame cartItem) {
+    public void delete(CartItem cartItem) {
         cartItemRepository.delete(cartItem);
     }
 }

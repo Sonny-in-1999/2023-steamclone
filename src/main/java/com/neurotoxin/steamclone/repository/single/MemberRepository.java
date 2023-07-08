@@ -1,6 +1,6 @@
 package com.neurotoxin.steamclone.repository;
 
-import com.neurotoxin.steamclone.Entity.Member;
+import com.neurotoxin.steamclone.entity.single.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

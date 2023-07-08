@@ -1,7 +1,7 @@
 package com.neurotoxin.steamclone.repository;
 
-import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.WishListGame;
+import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.WishListGame;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

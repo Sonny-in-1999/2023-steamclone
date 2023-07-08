@@ -1,8 +1,8 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.CartItem;
-import com.neurotoxin.steamclone.Entity.Library;
-import com.neurotoxin.steamclone.Entity.Member;
+import com.neurotoxin.steamclone.entity.single.CartItem;
+import com.neurotoxin.steamclone.entity.single.Library;
+import com.neurotoxin.steamclone.entity.single.Member;
 import com.neurotoxin.steamclone.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,8 +45,8 @@ public class LibraryService {
 
     // 게임 구매
     @Transactional
-    public void create(CartItem purchasedGame) {
-        purchasedGame.getLibrary().getPurchasedGame().add(purchasedGame);
+    public void add(CartItem newPurchasedGame) {
+        newPurchasedGame.getMember().getLibrary().getPurchasedGame().add(newPurchasedGame);
     }
 
     // 게임 환불

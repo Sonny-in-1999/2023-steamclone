@@ -1,5 +1,7 @@
-package com.neurotoxin.steamclone.Entity;
+package com.neurotoxin.steamclone.entity;
 
+import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.single.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -1,8 +1,8 @@
 package com.neurotoxin.steamclone.service;
 
-import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.GameTag;
-import com.neurotoxin.steamclone.Entity.Tag;
+import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.GameTag;
+import com.neurotoxin.steamclone.entity.single.Tag;
 import com.neurotoxin.steamclone.repository.GameTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

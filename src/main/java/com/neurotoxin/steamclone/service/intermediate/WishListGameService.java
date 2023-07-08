@@ -1,9 +1,9 @@
 package com.neurotoxin.steamclone.service;
 
 
-import com.neurotoxin.steamclone.Entity.Game;
-import com.neurotoxin.steamclone.Entity.WishListGame;
-import com.neurotoxin.steamclone.Entity.WishListItem;
+import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.WishListGame;
+import com.neurotoxin.steamclone.entity.single.WishListItem;
 import com.neurotoxin.steamclone.repository.WishListGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

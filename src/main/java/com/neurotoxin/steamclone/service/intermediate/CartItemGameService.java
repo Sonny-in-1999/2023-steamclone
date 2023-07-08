@@ -1,9 +1,9 @@
 package com.neurotoxin.steamclone.service;
 
 
-import com.neurotoxin.steamclone.Entity.CartItem;
-import com.neurotoxin.steamclone.Entity.CartItemGame;
-import com.neurotoxin.steamclone.Entity.Game;
+import com.neurotoxin.steamclone.entity.single.CartItem;
+import com.neurotoxin.steamclone.entity.CartItemGame;
+import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.repository.CartItemGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

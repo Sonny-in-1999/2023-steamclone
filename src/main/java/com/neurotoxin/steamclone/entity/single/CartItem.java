@@ -2,6 +2,7 @@ package com.neurotoxin.steamclone.Entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class CartItem {
 
     @Id
@@ -32,8 +34,18 @@ public class CartItem {
     @OneToMany(mappedBy = "cartItem")
     private List<CartItemGame> cart = new ArrayList<>();
 
+
+    public CartItem(Member member, List<CartItemGame> cart) {
+        this.member = member;
+        this.cart = cart;
+    }
+
     // Order Status
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

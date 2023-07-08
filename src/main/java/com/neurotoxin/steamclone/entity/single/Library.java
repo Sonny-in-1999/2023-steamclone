@@ -28,4 +28,8 @@ public class Library {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    public void setPurchasedGame(List<CartItem> purchasedGame) {
+        this.purchasedGame = purchasedGame;
+    }
 }
