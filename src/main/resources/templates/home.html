@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Clone</title>
+    <style>
+        /* 스타일링 예시 */
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .navbar .active {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="/store" th:classappend="${tab eq 'store'} ? 'active'">상점</a>
+    <a href="/library" th:classappend="${tab eq 'library'} ? 'active'">라이브러리</a>
+    <a href="/community" th:classappend="${tab eq 'community'} ? 'active'">커뮤니티</a>
+    <a href="/account" th:classappend="${tab eq 'profile'} ? 'active'">프로필</a>
+    <a href="/login">로그인</a>
+</div>
+<h1>Steam Clone</h1>
+<div>
+    <h2>상점</h2>
+    <ul>
+        <li><a href="/store/list">게임 전체 목록</a></li>
+        <li><a href="/store/search">게임 검색</a></li>
+    </ul>
+</div>
+<div>
+    <h2>커뮤니티</h2>
+    <ul>
+        <li><a href="/community/home">커뮤니티</a></li>
+        <li><a href="/search/member">유저 검색</a></li>
+        <li><a href="/community/community-search">커뮤니티 검색</a></li>
+    </ul>
+</div>
+<div>
+    <a href="/library/list">라이브러리</a>
+</div>
+<div>
+    <h2>프로필</h2>
+    <ul>
+        <li><a href="/account">개인 페이지</a></li>
+        <li><a href="/account/edit">개인정보 수정</a></li>
+    </ul>
+</div>
+</body>
+</html>

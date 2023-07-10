@@ -13,32 +13,32 @@ public class GameApiController {
 
     private final GameService gameService;
 
-    @GetMapping("/api/test/game")
+    @GetMapping("/gameList")
     public List<Game> gameList() {
         return gameService.findAllGames();
     }
 
-    @GetMapping("/api/test/game/{gameId}")
+    @GetMapping("/{gameId}")
     public Game findGameById(@PathVariable Long gameId) {
         return gameService.findGameById(gameId);
     }
 
-    @GetMapping("/api/test/search/{gameName}")
+    @GetMapping("/search/{gameName}")
     public Game findGameByName(@PathVariable String gameName) {
-        return gameService.findGameByName(gameName);
+        return gameService.findGameByTitle(gameName);
     }
 
-    @PostMapping("/api/test/game/add")
-    public void addGame(@RequestBody Game devGame,String ... tagName ) {
+    @PostMapping("/api/products/add")
+    public void addGame(@RequestBody Game devGame,String ... tagName) {
         gameService.create(devGame, tagName);
     }
 
-    @DeleteMapping("/api/test/game/{gameId}")
+    @DeleteMapping("/{gameId}")
     public void deleteGame(@PathVariable Long gameId) {
         gameService.delete(gameId);
     }
 
-    @PutMapping("/api/test/game/{gameId}")
+    @PutMapping("/{gameId}")
     public void updateGame(@PathVariable Long gameId, @RequestBody Game game) {
         gameService.update(gameId, game);
     }

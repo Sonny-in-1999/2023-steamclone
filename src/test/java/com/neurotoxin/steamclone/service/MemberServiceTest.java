@@ -161,10 +161,10 @@ public class MemberServiceTest {
 
         Game game1 = new Game();
         game1.setPrice(10);
-        game1.setName("NMH");
+        game1.setTitle("NMH");
         Game game2 = new Game();
         game2.setPrice(69);
-        game2.setName("Unji");
+        game2.setTitle("Unji");
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);
@@ -198,10 +198,10 @@ public class MemberServiceTest {
 
         Game game1 = new Game();
         game1.setPrice(10);
-        game1.setName("NMH");
+        game1.setTitle("NMH");
         Game game2 = new Game();
         game2.setPrice(69);
-        game2.setName("Unji");
+        game2.setTitle("Unji");
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);

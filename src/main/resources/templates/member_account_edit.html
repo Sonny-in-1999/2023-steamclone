@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit Member Profile</title>
 </head>
 <body>
-
+<h1>Edit Member Profile</h1>
+<form action="#" th:action="@{/account/edit/{memberId}(memberId=${member.id})}" method="post">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:value="${member.email}" required>
+    <label for="nickName">Nickname:</label>
+    <input type="text" id="nickName" name="nickName" th:value="${member.nickName}" required>
+    <label for="phoneNumber">PhoneNumber:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${member.phoneNumber}" required>
+    <!-- 추가적인 필드 -->
+    <button type="submit">Update</button>
+</form>
+<a href="/account/{memberId}">Cancel</a>
 </body>
 </html>

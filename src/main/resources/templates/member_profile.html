@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Profile</title>
+</head>
+<body>
+<h1>Member Profile</h1>
+<div>
+    <h2>Nickname: <span th:text="${member.nickName}"></span></h2>
+    <p>Email: <span th:text="${member.email}"></span></p>
+    <p>PhoneNumber: <span th:text="${member.phoneNumber}"></span></p>
+    <!-- 추가적인 필드 -->
+</div>
+<a href="/search/member">Back to Search</a>
+</body>
+</html>

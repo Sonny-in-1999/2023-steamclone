@@ -23,9 +23,11 @@ public class Game {
     @Column(name = "game_id")
     private Long id;
 
-    private String name;
+    private String title;
 
     private int price;
+
+    private String description;
 
     @OneToMany (mappedBy = "game", fetch = EAGER)
     private List<GameTag> tags = new ArrayList<>();
@@ -36,11 +38,15 @@ public class Game {
     @OneToMany (mappedBy = "game")
     private List<CartItemGame> cart = new ArrayList<>();
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

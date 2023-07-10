@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Game List</title>
+</head>
+<body>
+<h1>Game List</h1>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Price</th>
+    <th>Tags</th>
+    <th>Detail</th>
+  </tr>
+  <tr th:each="game : ${games}">
+    <td th:text="${game.title}"></td>
+    <td th:text="${game.price}"></td>
+    <td>
+      <ul>
+        <li th:each="tag : ${game.tags}" th:text="${tag.tag.name}"></li>
+      </ul>
+    </td>
+    <td><a th:href="@{/app/{gameId}(gameId=${game.id})}">Game Info</a></td>
+  </tr>
+</table>
+<a href="/products/add">Add Game</a>
+</body>
+</html>

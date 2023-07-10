@@ -9,4 +9,7 @@ import java.util.List;
 public interface GameTagRepository extends JpaRepository<GameTag, Long> {
 
     List<GameTag> findGameTagByGame(Game game);
+
+    GameTag deleteByGame(Game game);
+
 }

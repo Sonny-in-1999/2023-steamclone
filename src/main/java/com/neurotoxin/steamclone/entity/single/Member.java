@@ -1,5 +1,8 @@
 package com.neurotoxin.steamclone.entity.single;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,6 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Member {
 
     @Id
@@ -31,10 +35,6 @@ public class Member {
 
     @Enumerated(EnumType.STRING)  // [USER, DEVELOPER]
     private Grade grade;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "steam_id")
-    private Steam steam;
 
     @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
     private Library library = new Library();

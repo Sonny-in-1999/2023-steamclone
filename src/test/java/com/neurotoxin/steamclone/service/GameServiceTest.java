@@ -49,7 +49,7 @@ public class GameServiceTest {
         tag2.setName("nude");
         tagService.create(tag1);
         tagService.create(tag2);
-        game1.setName("NMH RPG");
+        game1.setTitle("NMH RPG");
         game1.setPrice(7);
         //when
         gameService.create(game1, "adult", "nude");
@@ -67,7 +67,7 @@ public class GameServiceTest {
     public void deleteGame() throws Exception {
         // 게임 생성(태그 포함)
         Game game1 = new Game();
-        game1.setName("NMH Adventure");
+        game1.setTitle("NMH Adventure");
         Tag tag1 = new Tag();
         Tag tag2 = new Tag();
         tag1.setName("adult");
@@ -107,8 +107,8 @@ public class GameServiceTest {
         Tag tag1 = new Tag();
 
         tag1.setName("adult");
-        game1.setName("NMH RPG");
-        game2.setName("NMH RPG");
+        game1.setTitle("NMH RPG");
+        game2.setTitle("NMH RPG");
 
         tagService.create(tag1);
         gameService.create(game1, "adult");
@@ -124,7 +124,7 @@ public class GameServiceTest {
     public void unknownGame() throws Exception {
         //given
         Game game1 = new Game();
-        game1.setName("NMH Blood");
+        game1.setTitle("NMH Blood");
 
         assertThrows(NullPointerException.class, () -> gameService.delete(999L));
     }
@@ -135,11 +135,11 @@ public class GameServiceTest {
     public void updateGame() throws Exception {
         //given
         Game game1 = new Game();
-        game1.setName("NMH RPG");
+        game1.setTitle("NMH RPG");
         game1.setPrice(7);
 
         Game newGame = new Game();
-        newGame.setName("NMH RPG - Idle Adventure Game");
+        newGame.setTitle("NMH RPG - Idle Adventure Game");
         newGame.setPrice(55);
 
         Tag tag1 = new Tag();

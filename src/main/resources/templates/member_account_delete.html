@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Delete Member</title>
 </head>
 <body>
-
+<h1>Delete Member</h1>
+<p>Are you sure you want to delete member: <strong th:text="${member.nickName}"></strong>?</p>
+<form action="#" th:action="@{/account/leave/{memberId}(memberId=${member.id})}" method="post">
+    <button type="submit">Delete</button>
+</form>
+<a th:href="@{/account/{memberId}(memberId=${member.id})}">Back to Account Page</a>
 </body>
 </html>
