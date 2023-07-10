@@ -8,10 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -29,6 +31,8 @@ public class Game {
 
     private String description;
 
+    private LocalDate postDate;
+
     @OneToMany (mappedBy = "game", fetch = EAGER)
     private List<GameTag> tags = new ArrayList<>();
 
@@ -37,6 +41,16 @@ public class Game {
 
     @OneToMany (mappedBy = "game")
     private List<CartItemGame> cart = new ArrayList<>();
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "franchise_id")
+    private Franchise franchise;
+
+    @OneToMany (mappedBy = "game")
+    private List<Comment> comments;
+
+    @OneToOne(mappedBy = "game")
+    private Hub hub;
 
     public void setTitle(String title) {
         this.title = title;
@@ -48,5 +62,21 @@ public class Game {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPostDate(LocalDate postDate) {
+        this.postDate = postDate;
+    }
+
+    public void setFranchise(Franchise franchise) {
+        this.franchise = franchise;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void setHub(Hub hub) {
+        this.hub = hub;
     }
 }

@@ -5,6 +5,7 @@ import com.neurotoxin.steamclone.entity.connect.CartItemGame;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,10 @@ public class CartItem {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private LocalDate purchaseDate;
+
+    private LocalDate lastPlayed;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "library_id")
@@ -40,5 +45,13 @@ public class CartItem {
     // Order Status
     public void setStatus(Status status) {
         this.status = status;
+    }
+    // Purchase Date
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+    // Last Played Date
+    public void setLastPlayed(LocalDate lastPlayed) {
+        this.lastPlayed = lastPlayed;
     }
 }

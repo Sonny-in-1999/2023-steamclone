@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +34,13 @@ public class Member {
 
     private String phoneNumber;
 
+    private LocalDate joinDate;
+
     @Enumerated(EnumType.STRING)  // [USER, DEVELOPER]
     private Grade grade;
+
+    @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
+    private Wallet wallet;
 
     @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
     private Library library = new Library();
@@ -44,6 +50,12 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CartItem> cart = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Community> communities;
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments;
 
     public void setEmail(String email) {
         this.email = email;
@@ -59,6 +71,10 @@ public class Member {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
     }
 
     public void setGrade(Grade grade) {

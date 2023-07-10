@@ -37,20 +37,6 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    @Transactional
-    public Game create(Game game, String ... tagName){
-        validateDupGame(game);
-
-        List<Tag> findTags = new ArrayList<>();
-        for (String s : tagName) {
-            findTags.add(tagService.findTagByName(s));
-        }
-        for (Tag tag : findTags) {
-            gameTagService.create(game, tag);
-        }
-        return gameRepository.save(game);
-    }
-
     // 게임 전건 조회
     public List<Game> findAllGames() {
         return gameRepository.findAll();
@@ -120,5 +106,4 @@ public class GameService {
             throw new IllegalStateException("이미 등록된 게임입니다.");
         }
     }
-
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,13 @@ public class WishListItem {
     @OneToMany (mappedBy = "wishListItem")
     private List<WishListGame> wishList = new ArrayList<>();
 
+    private LocalDate wishDate;
+
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setWishDate(LocalDate wishDate) {
+        this.wishDate = wishDate;
     }
 }

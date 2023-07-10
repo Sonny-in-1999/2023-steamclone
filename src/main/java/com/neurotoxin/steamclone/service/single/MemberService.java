@@ -28,6 +28,7 @@ public class MemberService {
     @Transactional
     public void register(Member member) {
         create(member);
+        member.getWallet().setMember(member);
         member.getLibrary().setMember(member);
         member.setNickName(member.getLoginName());
         member.setGrade(Grade.USER);
