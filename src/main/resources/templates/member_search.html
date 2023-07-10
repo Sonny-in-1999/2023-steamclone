@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Search</title>
+</head>
+<body>
+<h1>User Search</h1>
+<form action="#" th:action="@{/api/test/member/loginName}" method="get">
+    <label for="loginName">Login Name:</label>
+    <input type="text" id="loginName" name="loginName">
+    <button type="submit">Search</button>
+</form>
+<hr>
+<div th:if="${member != null}">
+    <h2>User Details</h2>
+    <p th:text="'Name: ' + ${member.nickName}"></p>
+    <p th:text="'Email: ' + ${member.email}"></p>
+    <!-- 추가적인 사용자 정보 표시 -->
+</div>
+<div th:unless="${member != null}">
+    <p>No user found.</p>
+</div>
+</body>
+</html>
