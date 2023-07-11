@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Developer Join</h1>
-<form action="#" th:action="@{/dev}" method="post">
+<form action="#" th:action="@{/join/dev}" method="post" th:object="${member}">
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" required>
     <label for="loginName">LoginName:</label>

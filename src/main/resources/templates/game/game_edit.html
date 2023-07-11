@@ -20,7 +20,7 @@
     <label for="tag">Tags:</label><br>
     <div th:each="tag : ${tags}">
         <input type="checkbox" id="tag" name="tagIds" th:value="${tag.id}"
-               th:checked="${#lists.contains(gameTagIds, tag.id.toString())}"/>
+               th:checked="${#lists.contains(gameTagIds, tag.id.toString())}" required/>
         <label th:for="${'tag-' + tag.id}" th:text="${tag.name}"></label><br>
     </div><br>
 

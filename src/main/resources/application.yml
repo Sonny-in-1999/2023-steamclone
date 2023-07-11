@@ -23,3 +23,8 @@ logging:
   level:
     org.hibernate.sql: debug  # logger를 통해 실행 sql 로그 출력
     org.hibernate.type: trace
+
+
+jwt:
+  secret:
+    asjkdfjkha32434294@!*dkasjd1213123-0@d10@#*$&*&%d12od12d00di1id93d3dj13hd1309ud13

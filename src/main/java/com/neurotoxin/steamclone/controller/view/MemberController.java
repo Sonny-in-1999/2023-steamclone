@@ -1,43 +1,55 @@
 package com.neurotoxin.steamclone.controller.view;
 
 import com.neurotoxin.steamclone.entity.single.Member;
+import com.neurotoxin.steamclone.security.AuthenticationService;
+import com.neurotoxin.steamclone.security.JwtToken;
 import com.neurotoxin.steamclone.service.single.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthenticationService authenticationService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     // 일반유저 회원가입 페이지
     @GetMapping("/join")
-    public String userJoinPage() {
+    public String userJoinPage(Model model) {
+        model.addAttribute("member", new Member());
         return "member/member_join";
     }
 
     // 회원가입 완료
     @PostMapping("/join")
     public String joinUser(@ModelAttribute Member member) {
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         memberService.registerUser(member);
-        return "redirect:/join-success";
+        return "redirect:/login";
     }
 
     // 개발자 회원가입 페이지
-    @GetMapping("/dev")
-    public String devJoinPage() {
+    @GetMapping("/join/dev")
+    public String devJoinPage(Model model) {
+        model.addAttribute("member", new Member());
         return "member/dev_join";
     }
 
     // 개발자 회원가입
-    @PostMapping("/dev")
+    @PostMapping("/join/dev")
     public String joinDev(@ModelAttribute Member member) {
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         memberService.registerDev(member);
         return "redirect:/join-success";
     }
@@ -52,8 +64,15 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public String login() {
+    public String loginPage() {
         return "member/login";
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<JwtToken> loginSuccess(@RequestParam Map<String, String> loginForm) {
+        JwtToken token = authenticationService.login(loginForm.get("loginName"), loginForm.get("password"));
+        return ResponseEntity.ok(token);
     }
 
     // 유저 개인 페이지

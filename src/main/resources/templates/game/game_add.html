@@ -19,7 +19,7 @@
 
     <label for="tag">Tags:</label>
     <div th:each="tag : ${tags}">
-        <input type="checkbox" id="tag" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}"/>
+        <input type="checkbox" id="tag" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}" required/>
     </div>
 
     <button type="submit">Add Game</button>
