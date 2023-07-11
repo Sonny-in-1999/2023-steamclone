@@ -16,29 +16,44 @@ public class MemberController {
     private final MemberService memberService;
 
 
-    // 회원가입 페이지
+    // 일반유저 회원가입 페이지
     @GetMapping("/join")
-    public String memberJoinPage() {
-        return "member_join";
+    public String userJoinPage() {
+        return "member/member_join";
     }
 
     // 회원가입 완료
     @PostMapping("/join")
-    public String joinMember(@ModelAttribute Member member) {
-        memberService.register(member);
+    public String joinUser(@ModelAttribute Member member) {
+        memberService.registerUser(member);
         return "redirect:/join-success";
     }
+
+    // 개발자 회원가입 페이지
+    @GetMapping("/dev")
+    public String devJoinPage() {
+        return "member/dev_join";
+    }
+
+    // 개발자 회원가입
+    @PostMapping("/dev")
+    public String joinDev(@ModelAttribute Member member) {
+        memberService.registerDev(member);
+        return "redirect:/join-success";
+    }
+
+
 
     // 회원가입 완료 페이지
     @GetMapping("/join-success")
     public String joinSuccessPage() {
-        return "member_join_success";
+        return "member/member_join_success";
     }
 
     // 로그인 페이지
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "member/login";
     }
 
     // 유저 개인 페이지
@@ -46,7 +61,7 @@ public class MemberController {
     public String memberAccountPage(@PathVariable Long memberId, Model model) {
         Member member = memberService.findMemberById(memberId);
         model.addAttribute("member", member);
-        return "member_account";
+        return "member/member_account";
     }
 
     // 유저 개인 정보 수정 페이지
@@ -54,7 +69,7 @@ public class MemberController {
     public String editMemberAccountPage(@PathVariable Long memberId, Model model) {
         Member member = memberService.findMemberById(memberId);
         model.addAttribute("member", member);
-        return "member_account_edit";
+        return "member/member_account_edit";
     }
 
     // 유저 개인 정보 수정
@@ -69,7 +84,7 @@ public class MemberController {
     public String deleteMemberPage(@PathVariable Long memberId, Model model) {
         Member member = memberService.findMemberById(memberId);
         model.addAttribute("member", member);
-        return "member_account_delete";
+        return "member/member_account_delete";
     }
 
     // 회원탈퇴 후 goodbye.html로 연결
@@ -77,7 +92,7 @@ public class MemberController {
     public String deleteMember(@PathVariable Long memberId, Model model) {
         Member deletedMember = memberService.delete(memberId);
         model.addAttribute("member", deletedMember);
-        return "goodbye";
+        return "member/goodbye";
     }
 
     // 유저검색 페이지
@@ -85,7 +100,7 @@ public class MemberController {
     public String nickNameSearchPage(@RequestParam(required = false) String nickName, Model model) {
         List<Member> members = memberService.findMemberByNickNameContaining(nickName);
         model.addAttribute("members", members);
-        return "member_search";
+        return "member/member_search";
     }
 
     // 검색을 통해 찾은 유저의 프로필 페이지
@@ -93,6 +108,6 @@ public class MemberController {
     public String memberProfilePage(@PathVariable Long memberId, Model model) {
         Member member = memberService.findMemberById(memberId);
         model.addAttribute("member", member);
-        return "member_profile";
+        return "member/member_profile";
     }
 }

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class GameController {
     public String app(@PathVariable Long gameId,Model model) {
         Game game = gameService.findGameById(gameId);
         model.addAttribute("game", game);
-        return "app";
+        return "game/app";
     }
 
     // 게임 등록 페이지
@@ -37,7 +36,7 @@ public class GameController {
         List<Tag> tags = tagService.findAllTags(); // DB에 등록되어 있는 태그를 불러옴
         model.addAttribute("game", new Game());
         model.addAttribute("tags", tags);
-        return "game_add";
+        return "game/game_add";
     }
 
     // 게임 등록
@@ -51,7 +50,7 @@ public class GameController {
         return "redirect:/products/list";
     }
 
-    // 게임 정보 수정 페이지(삭제도 여기서 가능)
+    // 게임 정보 수정 페이지(여기서 삭제 페이지로 이동 가능)
     @GetMapping("/products/edit/{gameId}")
     public String editGamePage(@PathVariable Long gameId, Model model) {
         Game game = gameService.findGameById(gameId);
@@ -65,22 +64,25 @@ public class GameController {
         model.addAttribute("game", game);
         model.addAttribute("tags", tags);
         model.addAttribute("gameTagIds", gameTagIds);
-        return "game_edit";
+        return "game/game_edit";
     }
 
+    // 게임 정보 수정
     @PostMapping("/products/edit/{gameId}")
     public String editGame(@PathVariable Long gameId, @ModelAttribute Game game, @RequestParam List<Long> tagIds) {
         gameService.updateGame(gameId, game, tagIds);
         return "redirect:/products/list";
     }
 
+    // 게임 삭제 페이지
     @GetMapping("/products/delete/{gameId}")
     public String deleteGamePage(@PathVariable Long gameId, Model model) {
         Game game = gameService.findGameById(gameId);
         model.addAttribute("game", game);
-        return "game_delete";
+        return "game/game_delete";
     }
 
+    // 게임 삭제
     @PostMapping("/products/delete/{gameId}")
     public String deleteGame(@PathVariable Long gameId) {
         gameService.delete(gameId);
@@ -92,9 +94,8 @@ public class GameController {
     public String gameList(Model model) {
         List<Game> games = gameService.findAllGames();
         model.addAttribute("games", games);
-        return "game_list";
+        return "game/game_list";
     }
 
-    // 게임 삭제
 
 }

@@ -22,7 +22,7 @@ public class MemberApiController {
     }
 
     // 식별자를 이용한 멤버 조회
-    @GetMapping("memberId/{memberId}")
+    @GetMapping("/memberId/{memberId}")
     public Member findMemberById(@PathVariable Long memberId) {
         return memberService.findMemberById(memberId);
     }

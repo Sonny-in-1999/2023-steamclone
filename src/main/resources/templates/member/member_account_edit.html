@@ -8,14 +8,14 @@
 <h1>Edit Member Profile</h1>
 <form action="#" th:action="@{/account/edit/{memberId}(memberId=${member.id})}" method="post">
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" th:value="${member.email}" required>
+    <input type="email" id="email" name="email" th:value="${member.email}" required/>
     <label for="nickName">Nickname:</label>
-    <input type="text" id="nickName" name="nickName" th:value="${member.nickName}" required>
+    <input type="text" id="nickName" name="nickName" th:value="${member.nickName}" required/>
     <label for="phoneNumber">PhoneNumber:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${member.phoneNumber}" required>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${member.phoneNumber}" required/>
     <!-- 추가적인 필드 -->
     <button type="submit">Update</button>
 </form>
-<a href="/account/{memberId}">Cancel</a>
+<a th:href="@{/account/{memberId}(memberId=member.id)}">Cancel</a>
 </body>
 </html>

@@ -38,6 +38,10 @@ public class Community {
     private List<Comment> comments;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "hub_id")
+    private Hub hub;
+
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

@@ -62,8 +62,8 @@ public class MemberServiceTest {
         member2.setGrade(Grade.USER);
 
         //when
-        memberService.register(member1);
-        memberService.register(member2);
+        memberService.registerUser(member1);
+        memberService.registerUser(member2);
         //then
         assertThat(member1).isEqualTo(memberService.findMemberById(member1.getId()));
         assertThat(member2).isEqualTo(memberService.findMemberById(member2.getId()));
@@ -84,10 +84,10 @@ public class MemberServiceTest {
         Member member2 = new Member();
         member2.setLoginName("login-example1");
         //when
-        memberService.register(member1);
+        memberService.registerUser(member1);
         //then
         assertThrows(IllegalStateException.class, () ->
-                memberService.register(member2));
+                memberService.registerUser(member2));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class MemberServiceTest {
         member.setNickName("nickname1");
         member.setLoginName("loginName1");
 
-        memberService.register(member);
+        memberService.registerUser(member);
         List<Member> allMembers = memberService.findAllMembers();
         assertThat(allMembers.size()).isEqualTo(1);
 
@@ -131,7 +131,7 @@ public class MemberServiceTest {
         member1.setPassword("password123");
         member1.setPhoneNumber("010-1234-5678");
         member1.setGrade(Grade.DEVELOPER);
-        memberService.register(member1);
+        memberService.registerUser(member1);
 
         Member newMember = new Member();
         newMember.setEmail("NMH@naver.com");
@@ -157,7 +157,7 @@ public class MemberServiceTest {
         //given
         // 게임과 멤버를 하나씩 생성해서 DB에 저장
         Member member = new Member();
-        memberService.register(member);
+        memberService.registerUser(member);
 
         Game game1 = new Game();
         game1.setPrice(10);
@@ -168,8 +168,8 @@ public class MemberServiceTest {
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);
-        gameService.create(game1, tag.getName());
-        gameService.create(game2, tag.getName());
+        gameService.createGame(game1);
+        gameService.createGame(game2);
 
         WishListItem wishListItem1 = new WishListItem();
         WishListItem wishListItem2 = new WishListItem();
@@ -194,7 +194,7 @@ public class MemberServiceTest {
     @Transactional
     public void memberAddCartItem() throws Exception {
         Member member = new Member();
-        memberService.register(member);
+        memberService.registerUser(member);
 
         Game game1 = new Game();
         game1.setPrice(10);
@@ -205,8 +205,8 @@ public class MemberServiceTest {
         Tag tag = new Tag();
         tag.setName("adult");
         tagService.create(tag);
-        gameService.create(game1, tag.getName());
-        gameService.create(game2, tag.getName());
+        gameService.createGame(game1);
+        gameService.createGame(game2);
 
         CartItem cartItem1 = new CartItem();
         CartItem cartItem2 = new CartItem();

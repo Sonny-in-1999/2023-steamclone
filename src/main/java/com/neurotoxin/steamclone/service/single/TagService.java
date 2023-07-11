@@ -48,7 +48,6 @@ public class TagService {
     @Transactional
     public void delete(Long tagId) {
         Tag findTag = tagRepository.findTagById(tagId);
-
         validateTag(findTag);
         tagRepository.delete(findTag);
     }
@@ -57,9 +56,7 @@ public class TagService {
     @Transactional
     public void update(Long tagId, Tag newTag) {
         Tag oldTag = tagRepository.findTagById(tagId);
-
         oldTag.setName(newTag.getName());
-
         tagRepository.save(oldTag);
     }
 

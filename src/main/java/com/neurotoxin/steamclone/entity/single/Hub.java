@@ -19,6 +19,5 @@ public class Hub {
     private Game game;
 
     @OneToMany(mappedBy = "hub")
-    @JoinColumn(name = "community_id")
     private List<Community> communities;
 }

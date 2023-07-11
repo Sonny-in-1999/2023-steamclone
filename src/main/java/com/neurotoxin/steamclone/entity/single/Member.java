@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +36,15 @@ public class Member {
 
     private String phoneNumber;
 
-    private LocalDate joinDate;
+    private LocalDateTime joinDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)  // [USER, DEVELOPER]
     private Grade grade;
 
-    @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
-    private Wallet wallet;
+    @OneToOne(mappedBy = "member",cascade = PERSIST, fetch = LAZY)
+    private Wallet wallet = new Wallet(0);
 
-    @OneToOne(mappedBy = "member", cascade = PERSIST, fetch = LAZY)
+    @OneToOne(mappedBy = "member",cascade = PERSIST, fetch = LAZY)
     private Library library = new Library();
 
     @OneToMany(mappedBy = "member")
@@ -73,7 +75,7 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setJoinDate(LocalDate joinDate) {
+    public void setJoinDate(LocalDateTime joinDate) {
         this.joinDate = joinDate;
     }
 
@@ -83,5 +85,13 @@ public class Member {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
     }
 }

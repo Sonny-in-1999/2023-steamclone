@@ -29,8 +29,8 @@ public class GameApiController {
     }
 
     @PostMapping("/api/products/add")
-    public void addGame(@RequestBody Game devGame,String ... tagName) {
-        gameService.create(devGame, tagName);
+    public void addGame(@RequestBody Game devGame) {
+        gameService.createGame(devGame);
     }
 
     @DeleteMapping("/{gameId}")
@@ -38,8 +38,8 @@ public class GameApiController {
         gameService.delete(gameId);
     }
 
-    @PutMapping("/{gameId}")
-    public void updateGame(@PathVariable Long gameId, @RequestBody Game game) {
-        gameService.update(gameId, game);
-    }
+//    @PutMapping("/{gameId}")
+//    public void updateGame(@PathVariable Long gameId, @RequestBody List<Long> tagIds) {
+//        gameService.updateGame(gameId, tagIds);
+//    }
 }

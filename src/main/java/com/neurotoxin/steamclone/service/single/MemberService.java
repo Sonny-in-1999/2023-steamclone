@@ -1,12 +1,15 @@
 package com.neurotoxin.steamclone.service.single;
 
 import com.neurotoxin.steamclone.entity.single.Grade;
+import com.neurotoxin.steamclone.entity.single.Library;
 import com.neurotoxin.steamclone.entity.single.Member;
+import com.neurotoxin.steamclone.entity.single.Wallet;
 import com.neurotoxin.steamclone.repository.single.MemberRepository;
+import com.neurotoxin.steamclone.repository.single.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,22 +19,29 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final LibraryService libraryService;
+    private final WalletRepository walletRepository;
 
     // 멤버 객체 생성
     @Transactional
-    public Member create(Member member) {
+    public Member create(Member member, Grade grade) {
         validateDuplicateMember(member);
-        return memberRepository.save(member);
-    }
-
-    // 회원 가입
-    @Transactional
-    public void register(Member member) {
-        create(member);
         member.getWallet().setMember(member);
         member.getLibrary().setMember(member);
         member.setNickName(member.getLoginName());
-        member.setGrade(Grade.USER);
+        member.setGrade(grade);
+        return memberRepository.save(member);
+    }
+
+    // 일반 유저 회원가입
+    @Transactional
+    public void registerUser(Member member) {
+        create(member, Grade.USER);
+    }
+
+    // 개발자 회원가입
+    @Transactional
+    public void registerDev(Member member) {
+        create(member, Grade.DEVELOPER);
     }
 
     private void validateDuplicateMember(Member member) {
@@ -70,9 +80,9 @@ public class MemberService {
     @Transactional
     public Member delete(Long memberId) {
         Member findMember = memberRepository.findMemberById(memberId);
-
         validateMember(findMember);
         libraryService.delete(findMember.getLibrary());
+        walletRepository.delete(findMember.getWallet());
         memberRepository.delete(findMember);
         return findMember;
     }

@@ -17,9 +17,9 @@
     <label for="description">Description:</label>
     <textarea id="description" name="description" th:field="*{description}" required></textarea><br><br>
 
-    <label>Tags:</label>
+    <label for="tag">Tags:</label>
     <div th:each="tag : ${tags}">
-        <input type="checkbox" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}"/>
+        <input type="checkbox" id="tag" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}"/>
     </div>
 
     <button type="submit">Add Game</button>

@@ -17,7 +17,7 @@
     <label for="description">Description:</label>
     <textarea id="description" name="description" th:value="*{description}" required></textarea><br><br>
 
-    <label>Tags:</label><br>
+    <label for="tag">Tags:</label><br>
     <div th:each="tag : ${tags}">
         <input type="checkbox" id="tag" name="tagIds" th:value="${tag.id}"
                th:checked="${#lists.contains(gameTagIds, tag.id.toString())}"/>

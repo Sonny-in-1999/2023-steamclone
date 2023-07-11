@@ -17,6 +17,10 @@
     <tr th:each="tag : ${tags}">
         <td th:text="${tag.id}"></td>
         <td th:text="${tag.name}"></td>
+        <td>
+            <a th:href="@{/tags/edit/{tagId}(tagId=${tag.id})}">Edit Tag</a>
+        </td>
+
     </tr>
     </tbody>
 </table>
