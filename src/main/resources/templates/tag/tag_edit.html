@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Tag</title>
+</head>
+<body>
+<h1>Edit Tag</h1>
+<form action="#" th:action="@{/tags/edit/{tagId}(tagId=${tag.id})}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${tag.name}" required/>
+    <button type="submit">Update</button>
+</form>
+<a href="/tags/list">Cancel</a>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Join</title>
+</head>
+<body>
+<h1>User Join</h1>
+<form action="#" th:action="@{/join}" method="post">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" required>
+    <label for="loginName">LoginName:</label>
+    <input type="text" id="loginName" name="loginName" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <label for="phoneNumber">PhoneNumber:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="(-)를 포함하여 입력해주세요." required>
+    <button type="submit">Join</button>
+</form>
+</body>
+</html>
