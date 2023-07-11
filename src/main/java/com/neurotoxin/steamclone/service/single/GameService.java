@@ -4,7 +4,6 @@ package com.neurotoxin.steamclone.service.single;
 import com.neurotoxin.steamclone.entity.connect.GameTag;
 import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Tag;
-import com.neurotoxin.steamclone.repository.connect.GameTagRepository;
 import com.neurotoxin.steamclone.repository.single.GameRepository;
 import com.neurotoxin.steamclone.service.connect.CartItemGameService;
 import com.neurotoxin.steamclone.service.connect.GameTagService;
@@ -13,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,9 +23,12 @@ public class GameService {
     private final GameRepository gameRepository;
     private final TagService tagService;
     private final GameTagService gameTagService;
-    private final GameTagRepository gameTagRepository;
     private final WishListGameService wishListGameService;
     private final CartItemGameService cartItemGameService;
+    private final HubService hubService;
+    private final FranchiseService franchiseService;
+    private final CommentService commentService;
+    private final CommunityService communityService;
 
     // 게임 등록
 
@@ -34,6 +36,7 @@ public class GameService {
     @Transactional
     public Game createGame(Game game) {
         validateDupGame(game);
+        game.setPostDate(LocalDate.now());
         return gameRepository.save(game);
     }
 
@@ -58,10 +61,14 @@ public class GameService {
         Game findGame = gameRepository.findGameById(gameId);
         validateGame(findGame);
 
-        // Game 테이블과 연결된 중간테이블들의 fk 삭제
+        // Game 테이블과 연결된 모든 테이블들의 연관관계 삭제
         gameTagService.disconnect(findGame);
         wishListGameService.disconnect(findGame);
         cartItemGameService.disconnect(findGame);
+        hubService.disconnect(findGame);
+        franchiseService.disconnectGame(findGame);
+        commentService.disconnectFromEntity(findGame);
+        communityService.disconnectFromEntity(findGame);
 
         gameRepository.delete(findGame);
     }
@@ -78,16 +85,18 @@ public class GameService {
         game.setPrice(updatedGame.getPrice());
         game.setDescription(updatedGame.getDescription());
 
-        // 기존의 GameTag 삭제
-        game.getTags().clear();
-        gameTagService.disconnect(game);
+        if (tagIds != null && !tagIds.isEmpty()) {
+            // 기존의 GameTag 삭제
+            game.getTags().clear();
+            gameTagService.disconnect(game);
 
-        // 새로운 GameTag 생성
-        for (Long tagId : tagIds) {
-            Tag tag = tagService.findTagById(tagId);
-            if (tag != null) {
-                GameTag gameTag = gameTagService.create(game, tag);
-                game.getTags().add(gameTag);
+            // 새로운 GameTag 생성
+            for (Long tagId : tagIds) {
+                Tag tag = tagService.findTagById(tagId);
+                if (tag != null) {
+                    GameTag gameTag = gameTagService.create(game, tag);
+                    game.getTags().add(gameTag);
+                }
             }
         }
     }

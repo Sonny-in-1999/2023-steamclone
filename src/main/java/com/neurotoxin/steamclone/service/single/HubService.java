@@ -1,5 +1,6 @@
 package com.neurotoxin.steamclone.service.single;
 
+import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Hub;
 import com.neurotoxin.steamclone.repository.single.HubRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,14 @@ public class HubService {
 
     @Transactional
     public void delete(Hub hub) {
-        hub.getCommunities().clear();
-        hub.getGame().setHub(null);
         hubRepository.delete(hub);
     }
 
+    @Transactional
+    public void disconnect(Game game) {
+        Hub findHub = game.getHub();
+        findHub.getCommunities().clear();
+        game.setHub(null);
+        hubRepository.delete(findHub);
+    }
 }

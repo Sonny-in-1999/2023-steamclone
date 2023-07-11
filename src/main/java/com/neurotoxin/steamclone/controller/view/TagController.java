@@ -1,7 +1,6 @@
 package com.neurotoxin.steamclone.controller.view;
 
 import com.neurotoxin.steamclone.entity.single.Tag;
-import com.neurotoxin.steamclone.service.connect.GameTagService;
 import com.neurotoxin.steamclone.service.single.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
-    private final GameTagService gameTagService;
 
     // 태그 추가 페이지
     @GetMapping("/tags/add")

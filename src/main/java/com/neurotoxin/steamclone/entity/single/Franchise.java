@@ -22,4 +22,8 @@ public class Franchise {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 }

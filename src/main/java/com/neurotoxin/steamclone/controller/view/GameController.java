@@ -54,12 +54,14 @@ public class GameController {
     @GetMapping("/products/edit/{gameId}")
     public String editGamePage(@PathVariable Long gameId, Model model) {
         Game game = gameService.findGameById(gameId);
-        List<Long> gameTagIds = game.getTags().stream()
-                .map(gameTag -> gameTag.getTag().getId())
-                .collect(Collectors.toList());
         if (game == null) {
             return "redirect:/products/list";
         }
+
+        List<Long> gameTagIds = game.getTags().stream()
+                .map(gameTag -> gameTag.getTag().getId())
+                .collect(Collectors.toList());
+
         List<Tag> tags = tagService.findAllTags();
         model.addAttribute("game", game);
         model.addAttribute("tags", tags);
@@ -69,7 +71,7 @@ public class GameController {
 
     // 게임 정보 수정
     @PostMapping("/products/edit/{gameId}")
-    public String editGame(@PathVariable Long gameId, @ModelAttribute Game game, @RequestParam List<Long> tagIds) {
+    public String editGame(@PathVariable Long gameId, @ModelAttribute Game game, @RequestParam(required = false) List<Long> tagIds) {
         gameService.updateGame(gameId, game, tagIds);
         return "redirect:/products/list";
     }

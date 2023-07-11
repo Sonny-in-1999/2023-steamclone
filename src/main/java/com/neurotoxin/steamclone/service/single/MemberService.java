@@ -1,15 +1,12 @@
 package com.neurotoxin.steamclone.service.single;
 
 import com.neurotoxin.steamclone.entity.single.Grade;
-import com.neurotoxin.steamclone.entity.single.Library;
 import com.neurotoxin.steamclone.entity.single.Member;
-import com.neurotoxin.steamclone.entity.single.Wallet;
 import com.neurotoxin.steamclone.repository.single.MemberRepository;
 import com.neurotoxin.steamclone.repository.single.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,6 +17,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LibraryService libraryService;
     private final WalletRepository walletRepository;
+    private final CommunityService communityService;
+    private final CommentService commentService;
 
     // 멤버 객체 생성
     @Transactional
@@ -83,6 +82,9 @@ public class MemberService {
         validateMember(findMember);
         libraryService.delete(findMember.getLibrary());
         walletRepository.delete(findMember.getWallet());
+        commentService.disconnectFromEntity(findMember);
+        communityService.disconnectFromEntity(findMember);
+
         memberRepository.delete(findMember);
         return findMember;
     }
