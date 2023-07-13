@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Developer Join</title>
+    <title>Admin Join</title>
 </head>
 <body>
-<h1>Developer Join</h1>
-<form action="/join/dev" method="post">
+<h1>Admin Join</h1>
+<form action="/join/admin" method="post">
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" required>
     <label for="loginName">LoginName:</label>
@@ -15,7 +15,7 @@
     <input type="password" id="password" name="password" required>
     <label for="phoneNumber">PhoneNumber:</label>
     <input type="text" id="phoneNumber" name="phoneNumber" placeholder="(-)를 포함하여 입력해주세요." required>
-    <button type="submit">Join As Developer</button>
+    <button type="submit">Join As Admin</button>
 </form>
 </body>
 </html>

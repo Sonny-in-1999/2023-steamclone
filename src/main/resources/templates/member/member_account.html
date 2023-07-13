@@ -10,8 +10,8 @@
     <h2>Nickname: <span th:text="${member.nickName}"></span></h2>
     <p>Email: <span th:text="${member.email}"></span></p>
     <p>PhoneNumber: <span th:text="${member.phoneNumber}"></span></p>
-    <a th:href="@{/account/edit/{memberId}(memberId=${member.id})}">Edit Profile</a>
-    <a th:href="@{/account/leave/{memberId}(memberId=${member.id})}">Delete This Profile</a>
+    <a th:href="@{/account/edit/{loginName}(loginName=${member.loginName})}">Edit Profile</a>
+    <a th:href="@{/account/leave/{loginName}(loginName=${member.loginName})}">Delete This Profile</a>
 </div>
 </body>
 </html>

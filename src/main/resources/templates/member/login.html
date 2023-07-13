@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Login</h1>
-<form action="#" th:action="@{/login}" method="post">
+<form action="/login" method="post">
   <label for="loginName">LoginName:</label>
   <input type="text" id="loginName" name="loginName" required>
   <label for="password">Password:</label>
@@ -14,5 +14,7 @@
   <button type="submit">Login</button>
 </form>
 <p>If you don't have an account, <a href="/join">Sign Up</a></p>
+<p>Are you thinking of making a game? <a href="/join/dev">Be a Developer</a></p>
+<p> **개발을 위한 임시 링크입니다! <a href="/join/admin">Admin Register</a></p>
 </body>
 </html>

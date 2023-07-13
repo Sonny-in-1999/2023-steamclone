@@ -5,6 +5,7 @@ import com.neurotoxin.steamclone.entity.single.Member;
 import com.neurotoxin.steamclone.repository.single.MemberRepository;
 import com.neurotoxin.steamclone.repository.single.WalletRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -19,28 +20,37 @@ public class MemberService {
     private final WalletRepository walletRepository;
     private final CommunityService communityService;
     private final CommentService commentService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 멤버 객체 생성
     @Transactional
-    public Member create(Member member, Grade grade) {
+    public Member create(Member member, String role) {
         validateDuplicateMember(member);
         member.getWallet().setMember(member);
         member.getLibrary().setMember(member);
         member.setNickName(member.getLoginName());
-        member.setGrade(grade);
+        member.setRole(role);
+        String encodedPassword = bCryptPasswordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
         return memberRepository.save(member);
     }
 
     // 일반 유저 회원가입
     @Transactional
     public void registerUser(Member member) {
-        create(member, Grade.USER);
+        create(member, "ROLE_USER");
     }
 
     // 개발자 회원가입
     @Transactional
     public void registerDev(Member member) {
-        create(member, Grade.DEVELOPER);
+        create(member, "ROLE_DEVELOPER");
+    }
+
+    // *어드민 계정 생성(어드민 회원 가입)
+    @Transactional
+    public void registerAdmin(Member member) {
+        create(member, "ROLE_ADMIN");
     }
 
     private void validateDuplicateMember(Member member) {

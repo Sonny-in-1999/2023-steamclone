@@ -7,9 +7,9 @@
 <body>
 <h1>Delete Member</h1>
 <p>Are you sure you want to delete member: <strong th:text="${member.nickName}"></strong>?</p>
-<form action="#" th:action="@{/account/leave/{memberId}(memberId=${member.id})}" method="post">
+<form action="#" th:action="@{/account/leave/{loginName}(loginName=${member.loginName})}" method="post">
     <button type="submit">Delete</button>
 </form>
-<a th:href="@{/account/{memberId}(memberId=${member.id})}">Back to Account Page</a>
+<a th:href="@{/account/{loginName}(loginName=${member.loginName})}">Back to Account Page</a>
 </body>
 </html>

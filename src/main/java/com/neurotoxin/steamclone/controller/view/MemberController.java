@@ -1,11 +1,11 @@
 package com.neurotoxin.steamclone.controller.view;
 
 import com.neurotoxin.steamclone.entity.single.Member;
-import com.neurotoxin.steamclone.security.AuthenticationService;
-import com.neurotoxin.steamclone.security.JwtToken;
 import com.neurotoxin.steamclone.service.single.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,6 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final AuthenticationService authenticationService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     // 일반유저 회원가입 페이지
@@ -34,14 +32,13 @@ public class MemberController {
     // 회원가입 완료
     @PostMapping("/join")
     public String joinUser(@ModelAttribute Member member) {
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         memberService.registerUser(member);
-        return "redirect:/login";
+        return "redirect:/join-success";
     }
 
     // 개발자 회원가입 페이지
     @GetMapping("/join/dev")
-    public String devJoinPage(Model model) {
+    public String joinDevPage(Model model) {
         model.addAttribute("member", new Member());
         return "member/dev_join";
     }
@@ -49,11 +46,9 @@ public class MemberController {
     // 개발자 회원가입
     @PostMapping("/join/dev")
     public String joinDev(@ModelAttribute Member member) {
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         memberService.registerDev(member);
         return "redirect:/join-success";
     }
-
 
 
     // 회원가입 완료 페이지
@@ -68,48 +63,47 @@ public class MemberController {
         return "member/login";
     }
 
-    // 로그인
-    @PostMapping("/login")
-    public ResponseEntity<JwtToken> loginSuccess(@RequestParam Map<String, String> loginForm) {
-        JwtToken token = authenticationService.login(loginForm.get("loginName"), loginForm.get("password"));
-        return ResponseEntity.ok(token);
-    }
-
     // 유저 개인 페이지
-    @GetMapping("/account/{memberId}")
-    public String memberAccountPage(@PathVariable Long memberId, Model model) {
-        Member member = memberService.findMemberById(memberId);
+    @GetMapping("/account/{loginName}")
+    @PreAuthorize("#loginName == authentication.principal.username")
+    public String memberAccountPage(@PathVariable String loginName, Model model) {
+        Member member = memberService.findMemberByLoginName(loginName);
         model.addAttribute("member", member);
         return "member/member_account";
     }
 
     // 유저 개인 정보 수정 페이지
-    @GetMapping("/account/edit/{memberId}")
-    public String editMemberAccountPage(@PathVariable Long memberId, Model model) {
-        Member member = memberService.findMemberById(memberId);
+    @GetMapping("/account/edit/{loginName}")
+    @PreAuthorize("#loginName == authentication.principal.username")
+    public String editMemberAccountPage(@PathVariable String loginName, Model model) {
+        Member member = memberService.findMemberByLoginName(loginName);
         model.addAttribute("member", member);
         return "member/member_account_edit";
     }
 
     // 유저 개인 정보 수정
-    @PostMapping("account/edit/{memberId}")
-    public String updateAccountPage(@PathVariable Long memberId, @ModelAttribute Member updatedMember) {
-        memberService.update(memberId, updatedMember);
-        return "redirect:/account/{memberId}";
+    @PostMapping("account/edit/{loginName}")
+    @PreAuthorize("#loginName == authentication.principal.username")
+    public String updateAccountPage(@PathVariable String loginName, @ModelAttribute Member updatedMember) {
+        Member member = memberService.findMemberByLoginName(loginName);
+        memberService.update(member.getId(), updatedMember);
+        return "redirect:/account/{loginName}";
     }
 
     // 유저 개인 페이지에서 회원탈퇴 페이지로 이동
-    @GetMapping("account/leave/{memberId}")
-    public String deleteMemberPage(@PathVariable Long memberId, Model model) {
-        Member member = memberService.findMemberById(memberId);
+    @GetMapping("account/leave/{loginName}")
+    public String deleteMemberPage(@PathVariable String loginName, Model model) {
+        Member member = memberService.findMemberByLoginName(loginName);
         model.addAttribute("member", member);
         return "member/member_account_delete";
     }
 
     // 회원탈퇴 후 goodbye.html로 연결
-    @PostMapping("/account/leave/{memberId}")
-    public String deleteMember(@PathVariable Long memberId, Model model) {
-        Member deletedMember = memberService.delete(memberId);
+    @PostMapping("/account/leave/{loginName}")
+    @PreAuthorize("#loginName == authentication.principal.username")
+    public String deleteMember(@PathVariable String loginName, Model model) {
+        Member member = memberService.findMemberByLoginName(loginName);
+        Member deletedMember = memberService.delete(member.getId());
         model.addAttribute("member", deletedMember);
         return "member/goodbye";
     }

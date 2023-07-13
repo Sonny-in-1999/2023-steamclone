@@ -52,14 +52,12 @@ public class MemberServiceTest {
         member1.setLoginName("login-example1");
         member1.setPassword("password123");
         member1.setPhoneNumber("010-1234-5678");
-        member1.setGrade(Grade.DEVELOPER);
 
         Member member2 = new Member();
         member2.setEmail("example2@gmail.com");
         member2.setLoginName("login-example2");
         member2.setPassword("password123");
         member2.setPhoneNumber("010-1234-5678");
-        member2.setGrade(Grade.USER);
 
         //when
         memberService.registerUser(member1);
@@ -130,14 +128,12 @@ public class MemberServiceTest {
         member1.setEmail("example1@gmail.com");
         member1.setPassword("password123");
         member1.setPhoneNumber("010-1234-5678");
-        member1.setGrade(Grade.DEVELOPER);
         memberService.registerUser(member1);
 
         Member newMember = new Member();
         newMember.setEmail("NMH@naver.com");
         newMember.setPassword("0523");
         newMember.setPhoneNumber("010-0523-0523");
-        newMember.setGrade(Grade.USER);
         assertThat(newMember.getEmail()).isEqualTo("NMH@naver.com");
         //when
         memberService.update(member1.getId(), newMember);
@@ -146,7 +142,6 @@ public class MemberServiceTest {
         assertThat(updatedMember.getEmail()).isEqualTo(newMember.getEmail());
         assertThat(updatedMember.getPassword()).isEqualTo(newMember.getPassword());
         assertThat(updatedMember.getPhoneNumber()).isEqualTo(newMember.getPhoneNumber());
-        assertThat(updatedMember.getGrade()).isEqualTo(newMember.getGrade());
     }
 
     @Test

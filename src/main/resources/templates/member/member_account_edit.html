@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Edit Member Profile</h1>
-<form action="#" th:action="@{/account/edit/{memberId}(memberId=${member.id})}" method="post">
+<form action="#" th:action="@{/account/edit/{loginName}(loginName=${member.loginName})}" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" th:value="${member.email}" required/>
     <label for="nickName">Nickname:</label>
@@ -16,6 +16,6 @@
     <!-- 추가적인 필드 -->
     <button type="submit">Update</button>
 </form>
-<a th:href="@{/account/{memberId}(memberId=member.id)}">Cancel</a>
+<a th:href="@{/account/{loginName}(loginName=${member.loginName})}">Cancel</a>
 </body>
 </html>

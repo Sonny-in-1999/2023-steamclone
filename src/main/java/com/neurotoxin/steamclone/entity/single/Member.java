@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import net.bytebuddy.asm.Advice;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,10 +38,10 @@ public class Member {
 
     private String phoneNumber;
 
-    private LocalDateTime joinDate = LocalDateTime.now();
+    private String role;
 
-    @Enumerated(EnumType.STRING)  // [USER, DEVELOPER]
-    private Grade grade;
+    @CreationTimestamp
+    private LocalDate createdAt;
 
     @OneToOne(mappedBy = "member",cascade = PERSIST, fetch = LAZY)
     private Wallet wallet = new Wallet(0);
@@ -75,14 +77,6 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setJoinDate(LocalDateTime joinDate) {
-        this.joinDate = joinDate;
-    }
-
-    public void setGrade(Grade grade) {
-        this.grade = grade;
-    }
-
     public void setLoginName(String loginName) {
         this.loginName = loginName;
     }
@@ -93,5 +87,9 @@ public class Member {
 
     public void setLibrary(Library library) {
         this.library = library;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

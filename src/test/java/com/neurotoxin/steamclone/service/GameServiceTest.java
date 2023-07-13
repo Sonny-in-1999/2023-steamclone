@@ -52,7 +52,7 @@ public class GameServiceTest {
         game1.setTitle("NMH RPG");
         game1.setPrice(7);
         //when
-        gameService.create(game1, "adult", "nude");
+        gameService.createGame(game1);
 
         List<GameTag> allTags = gameTagService.getGameTags(game1);
         //then
@@ -74,7 +74,7 @@ public class GameServiceTest {
         tag2.setName("nude");
         tagService.create(tag1);
         tagService.create(tag2);
-        gameService.create(game1, "adult", "nude");
+        gameService.createGame(game1);
 
         // 게임이 태그와 함께 성공적으로 DB에 저장
         List<Game> allGames = gameService.findAllGames();
@@ -111,10 +111,10 @@ public class GameServiceTest {
         game2.setTitle("NMH RPG");
 
         tagService.create(tag1);
-        gameService.create(game1, "adult");
+        gameService.createGame(game1);
         //when
         //then
-        assertThrows(IllegalStateException.class, () -> gameService.create(game2, "ad"));
+        assertThrows(IllegalStateException.class, () -> gameService.createGame(game2));
     }
 
     @Test
@@ -154,13 +154,13 @@ public class GameServiceTest {
         tagService.create(tag2);
         tagService.create(tag3);
         tagService.create(tag4);
-        gameService.create(game1, "adult", "nude");
+        gameService.createGame(game1);
         //when
-        gameService.update(game1.getId(), newGame, "adult", "horror", "simulation");
+//        gameService.updateGame(game1.getId(), newGame, );
         Game updatedGame = gameService.findGameById(game1.getId());
         List<GameTag> updatedGameTags = gameTagService.getGameTags(updatedGame);
         //then
-        assertThat(updatedGame.getName()).isEqualTo(newGame.getName());
+        assertThat(updatedGame.getTitle()).isEqualTo(newGame.getTitle());
         assertThat(updatedGame.getPrice()).isEqualTo(newGame.getPrice());
         assertThat(updatedGameTags.size()).isEqualTo(3);
     }

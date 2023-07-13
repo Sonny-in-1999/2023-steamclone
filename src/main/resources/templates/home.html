@@ -24,36 +24,38 @@
 </head>
 <body>
 <div class="navbar">
-    <a href="/store" th:classappend="${tab eq 'store'} ? 'active'">상점</a>
-    <a href="/library" th:classappend="${tab eq 'library'} ? 'active'">라이브러리</a>
-    <a href="/community" th:classappend="${tab eq 'community'} ? 'active'">커뮤니티</a>
-    <a href="/account" th:classappend="${tab eq 'profile'} ? 'active'">프로필</a>
-    <a href="/login">로그인</a>
+    <h1 href="/">Steam Clone</h1>
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+        <a th:text="${member.nickName}" style="font-size: x-large"></a>
+        <a th:href="@{/account/{loginName}(loginName=${member.loginName})}"><strong>마이페이지</strong></a>
+        <a href="/logout"><strong>로그아웃</strong></a>
+    </span>
+    <span th:unless="${#authorization.expression('isAuthenticated()')}">
+        <a href="/login"><strong>로그인</strong></a>
+    </span>
+    <a href="/admin"><strong>Admin Page</strong></a>
 </div>
-<h1>Steam Clone</h1>
+
+<p>*개발중: 현재 구현이 완료된 기능만 여기에 표시됩니다.</p>
+<p>어드민 계정은 모든 기능을 이용할 수 있습니다. 개발단계에서는 되도록이면 어드민 계정을 생성하여 테스트하세요.</p>
 <div>
-    <h2>상점</h2>
+    <h2>게임 관련</h2>
     <ul>
-        <li><a href="/store/list">게임 전체 목록</a></li>
-        <li><a href="/store/search">게임 검색</a></li>
+        <li><a href="/products/list">게임 전체 목록</a></li>
+        <li><a href="/products/add">게임 등록(개발자/어드민 계정만 사용가능합니다)</a></li>
     </ul>
 </div>
 <div>
-    <h2>커뮤니티</h2>
+    <h2>커뮤니티/유저 관련</h2>
     <ul>
-        <li><a href="/community/home">커뮤니티</a></li>
         <li><a href="/search/member">유저 검색</a></li>
-        <li><a href="/community/community-search">커뮤니티 검색</a></li>
     </ul>
 </div>
 <div>
-    <a href="/library/list">라이브러리</a>
-</div>
-<div>
-    <h2>프로필</h2>
+    <h2>태그 관련</h2>
     <ul>
-        <li><a href="/account">개인 페이지</a></li>
-        <li><a href="/account/edit">개인정보 수정</a></li>
+        <li><a href="/tags/add">태그 등록(어드민 계정만 사용가능합니다)</a></li>
+        <li><a href="/tags/list">태그 목록(어드민 계정만 사용가능합니다)</a></li>
     </ul>
 </div>
 </body>
