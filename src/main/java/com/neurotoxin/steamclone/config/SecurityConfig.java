@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -26,7 +27,7 @@ public class SecurityConfig {
         return http.authorizeRequests()
                 .antMatchers("/account/**").authenticated()
                 .antMatchers("/products/add", "/products/edit/**", "/products/delete/**").access("hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/admin", "/tags/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/admin/**", "/tags/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

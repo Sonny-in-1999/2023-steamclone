@@ -7,6 +7,7 @@ import com.neurotoxin.steamclone.entity.connect.WishListGame;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Game {
 
     private String description;
 
-    private LocalDate postDate;
+    private LocalDate releaseDate;
 
     @OneToMany (mappedBy = "game", fetch = EAGER)
     private List<GameTag> tags = new ArrayList<>();
@@ -64,8 +65,8 @@ public class Game {
         this.description = description;
     }
 
-    public void setPostDate(LocalDate postDate) {
-        this.postDate = postDate;
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public void setFranchise(Franchise franchise) {

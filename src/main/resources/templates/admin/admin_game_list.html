@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Game List</title>
+</head>
+<body>
+<h1>Admin Game List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Tag</th>
+        <th>Release Date</th>
+        <th>Release Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="game : ${games}">
+        <td th:text="${game.title}"></td>
+        <td>
+            <ul>
+                <li th:each="tag : ${game.tags}" th:text="${tag.tag.name}"></li>
+            </ul>
+        </td>
+        <td th:text="${game.postDate}"></td>
+        <td><a th:href="@{/admin/game/delete/{gameId}(gameId=${game.id})}">제거</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

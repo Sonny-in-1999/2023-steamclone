@@ -19,6 +19,7 @@ public class HomeController {
         if (authentication != null && authentication.isAuthenticated()) {
             Member member = memberService.findMemberByLoginName(authentication.getName());
             model.addAttribute("member", member);
+
         }
         return "home";
     }
