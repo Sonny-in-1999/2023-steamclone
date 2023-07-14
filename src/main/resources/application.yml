@@ -1,4 +1,5 @@
 spring:
+
   h2:
     console:
       enabled: true
@@ -11,6 +12,10 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+  file:
+    upload:
+      location: media
+
   jpa:
     hibernate:
       ddl-auto: create  # create: 자동으로 테이블 생성(애플리케이션 생성 시점에 기존 테이블을 전부 삭제하고 다시 생성), none: 기존 테이블을 삭제하지 않음
@@ -18,6 +23,7 @@ spring:
       hibernate:
         #        show_sql: true  # sout을 통해 실행 sql 로그 출력
         format_sql: true
+
 
 logging:
   level:

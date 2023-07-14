@@ -1,8 +1,6 @@
 package com.neurotoxin.steamclone.service.single;
 
-import com.neurotoxin.steamclone.entity.single.Community;
-import com.neurotoxin.steamclone.entity.single.Hub;
-import com.neurotoxin.steamclone.entity.single.Member;
+import com.neurotoxin.steamclone.entity.single.*;
 import com.neurotoxin.steamclone.repository.single.CommunityRepository;
 import com.neurotoxin.steamclone.repository.single.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +34,11 @@ public class CommunityService {
     }
 
     @Transactional
-    public void post(Community community) {
+    public void post(Community community, List<Media> media) {
         create(community);
+        if (!media.isEmpty()) {
+            community.setMedia(media);
+        }
         community.getMember().getCommunities().add(community);
         community.setPostDate(LocalDate.now());
         community.setUpdateDate(null);

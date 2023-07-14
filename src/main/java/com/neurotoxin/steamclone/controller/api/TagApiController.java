@@ -18,7 +18,6 @@ public class TagApiController {
         return tagService.findAllTags();
     }
 
-    // 이상한거 입력할 때도, Request 200 ex) DB: {"name": "adult"} - url: tag/adul
     @GetMapping("/api/test/tag/{tagId}")
     public Tag findTagById(@PathVariable Long tagId) {
         return tagService.findTagById(tagId);

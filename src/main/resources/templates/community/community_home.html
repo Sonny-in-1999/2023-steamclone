@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Community</title>
+</head>
+<body>
+<table>
+  <tr th:each="community : ${community}">
+    <td th:text="${community.title}"></td>
+    <td th:text="${community.content}"></td>
+    <td th:text="${community.postDate}"></td>
+    <td th:text="${community.updateDate}"></td>
+    <td>
+      <ul>
+        <li th:each="media : ${community.media}" th:text="${community.media}"></li>
+      </ul>
+    </td>
+    <td><a th:href="@{/community/{communityId}(communityId=${community.id})}">Community Detail</a></td>
+  </tr>
+</table>
+<a href="/community/post">New Post</a>
+</body>
+</html>

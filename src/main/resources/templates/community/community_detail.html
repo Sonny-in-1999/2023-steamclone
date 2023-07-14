@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Info</title>
+</head>
+<body>
+<h1 th:text="${community.title}"></h1>
+
+<table>
+    <tr>
+        <td th:text="${community.content}"></td>
+        <td>
+            <span th:if="${community.updateDate != null}" th:text="${community.updateDate}"></span>
+            <span th:unless="${community.updateDate != null}" th:text="${community.postDate}"></span>
+        </td>
+    </tr>
+    <img th:each="image : ${community.media}"
+         th:if="${image.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).SCREENSHOT}"
+         th:src="@{'/main/resources/media/screenshots/' + ${image.storageName}}"
+         width="300" height="300" style="margin-right: 5px"/>
+    </tr>
+    <img th:each="vid : ${community.media}"
+         th:if="${vid.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).VIDEO}"
+         th:src="@{'/main/resources/media/screenshots/' + ${vid.storageName}}"
+         width="300" height="300" style="margin-right: 5px"/>
+    </tr>
+</table>
+
+<a th:href="@{/products/edit/{gameId}(gameId=${game.id})}">Edit Game</a>
+</body>
+</html>

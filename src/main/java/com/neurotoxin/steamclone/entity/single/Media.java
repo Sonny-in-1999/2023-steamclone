@@ -16,6 +16,8 @@ public class Media {
     @GeneratedValue
     @Column(name = "media_id")
     private Long id;
+    private String fileName;
+    private String storageName;
 
     @Enumerated(EnumType.STRING)
     private MediaType mediaType;
@@ -26,5 +28,13 @@ public class Media {
 
     public void setMediaType(MediaType mediaType) {
         this.mediaType = mediaType;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setStorageName(String storageName) {
+        this.storageName = storageName;
     }
 }
