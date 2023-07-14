@@ -36,7 +36,6 @@ public class GameService {
     @Transactional
     public Game createGame(Game game) {
         validateDupGame(game);
-        game.setPostDate(LocalDate.now());
         return gameRepository.save(game);
     }
 

@@ -19,8 +19,10 @@
 
     <label for="tag">Tags:</label>
     <div th:each="tag : ${tags}">
-        <input type="checkbox" id="tag" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}" required/>
+        <input type="checkbox" id="tag" name="selectedTags" th:value="${tag.id}" th:text="${tag.name}"/>
     </div>
+    <label for="releaseDate">Release Date:</label>
+    <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" required/>
 
     <button type="submit">Add Game</button>
 </form>
