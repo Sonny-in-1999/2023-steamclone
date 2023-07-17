@@ -26,6 +26,18 @@ public class Media {
     @JoinColumn(name = "community_id")
     private Community community;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "game_id")
+    private Game game;
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public void setMediaType(MediaType mediaType) {
         this.mediaType = mediaType;
     }

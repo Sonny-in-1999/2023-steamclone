@@ -2,14 +2,20 @@ package com.neurotoxin.steamclone.controller.view;
 
 
 import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.single.Media;
 import com.neurotoxin.steamclone.entity.single.Tag;
-import com.neurotoxin.steamclone.service.connect.GameTagService;
 import com.neurotoxin.steamclone.service.single.GameService;
+import com.neurotoxin.steamclone.service.single.MediaService;
 import com.neurotoxin.steamclone.service.single.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,12 +25,12 @@ public class GameController {
 
     private final GameService gameService;
     private final TagService tagService;
-    private final GameTagService gameTagService;
+    private final MediaService mediaService;
 
 
     // 게임 정보 페이지(상점 페이지)
     @GetMapping("/app/{gameId}")
-    public String app(@PathVariable Long gameId,Model model) {
+    public String app(@PathVariable Long gameId, Model model) {
         Game game = gameService.findGameById(gameId);
         model.addAttribute("game", game);
         return "game/app";
@@ -41,12 +47,10 @@ public class GameController {
 
     // 게임 등록
     @PostMapping("/products/add")
-    public String addGame(@ModelAttribute Game game, @RequestParam() List<Long> selectedTags) {
-        Game createdGame = gameService.createGame(game);
-        for (Long tagId : selectedTags) {
-            Tag tag = tagService.findTagById(tagId);
-            gameTagService.create(createdGame, tag);
-        }
+    public String addGame(@ModelAttribute Game game, @RequestParam("releaseDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate, List<Long> selectedTags, List<MultipartFile> files) throws IOException {
+        List<Media> media = mediaService.storeFiles(files, game);
+        game.setReleaseDate(releaseDate);
+        gameService.addGame(game, selectedTags, media);
         return "redirect:/products/list";
     }
 
@@ -71,8 +75,14 @@ public class GameController {
 
     // 게임 정보 수정
     @PostMapping("/products/edit/{gameId}")
-    public String editGame(@PathVariable Long gameId, @ModelAttribute Game game, @RequestParam(required = false) List<Long> tagIds) {
-        gameService.updateGame(gameId, game, tagIds);
+    public String editGame(@PathVariable Long gameId, @ModelAttribute Game game, @RequestParam(required = false) List<Long> tagIds, List<MultipartFile> files) throws IOException {
+        if (!files.isEmpty()) {
+            List<Media> media = mediaService.storeFiles(files, game);
+            gameService.updateGame(gameId, game, tagIds, media);
+        } else {
+            gameService.updateGame(gameId, game, tagIds, game.getMedia());
+        }
+
         return "redirect:/products/list";
     }
 

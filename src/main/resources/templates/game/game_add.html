@@ -24,6 +24,9 @@
     <label for="releaseDate">Release Date:</label>
     <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" required/>
 
+    <label for="media">Upload Image/Video:</label>
+    <input type="file" id="media" name="files" accept="image/*, video/*" multiple><br><br>
+
     <button type="submit">Add Game</button>
 </form>
 </body>

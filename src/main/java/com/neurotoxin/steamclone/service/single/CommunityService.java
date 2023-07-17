@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,11 +20,6 @@ public class CommunityService {
     private final MediaService mediaService;
     private final CommentService commentService;
 
-    @Transactional
-    public Community create(Community community) {
-        return communityRepository.save(community);
-    }
-
     public Community findCommunityById(Long communityId) {
         return communityRepository.findCommunityById(communityId);
     }
@@ -35,13 +30,19 @@ public class CommunityService {
 
     @Transactional
     public void post(Community community, List<Media> media) {
-        create(community);
+        communityRepository.save(community);
         if (!media.isEmpty()) {
             community.setMedia(media);
+            // 받아온 미디어 객체마다 커뮤니티에 지정합니다.
+            for (Media medium : media) {
+                medium.setCommunity(community);
+            }
+        } else {
+            community.setMedia(null);
         }
-        community.getMember().getCommunities().add(community);
-        community.setPostDate(LocalDate.now());
-        community.setUpdateDate(null);
+//        community.getMember().getCommunities().add(community);
+        community.setCreatedAt(LocalDateTime.now());
+        community.setUpdateAt(null);
     }
     // (유저) 댓글 삭제 메소드
     @Transactional
@@ -64,7 +65,7 @@ public class CommunityService {
         if (findMember.getId().equals(findCommunity.getMember().getId())) {
             findCommunity.setTitle(newCommunity.getTitle());
             findCommunity.setContent(newCommunity.getContent());
-            findCommunity.setUpdateDate(LocalDate.now());
+            findCommunity.setCreatedAt(LocalDateTime.now());
         } else {
             throw new IllegalStateException("권한이 없습니다.");
         }

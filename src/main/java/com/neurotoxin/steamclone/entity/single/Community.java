@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -24,17 +25,17 @@ public class Community {
 
     private String content;
 
-    private LocalDate postDate;
+    private LocalDateTime createdAt;
 
-    private LocalDate updateDate;
+    private LocalDateTime updateAt;
 
     @Enumerated(EnumType.STRING)
     private CommunityType communityType;
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<Media> media;
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", fetch = EAGER)
     private List<Comment> comments;
 
     @ManyToOne(fetch = LAZY)
@@ -53,12 +54,12 @@ public class Community {
         this.content = content;
     }
 
-    public void setPostDate(LocalDate postDate) {
-        this.postDate = postDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
     public void setCommunityType(CommunityType communityType) {

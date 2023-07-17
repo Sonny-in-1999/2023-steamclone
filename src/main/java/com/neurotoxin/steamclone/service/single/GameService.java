@@ -3,6 +3,7 @@ package com.neurotoxin.steamclone.service.single;
 
 import com.neurotoxin.steamclone.entity.connect.GameTag;
 import com.neurotoxin.steamclone.entity.single.Game;
+import com.neurotoxin.steamclone.entity.single.Media;
 import com.neurotoxin.steamclone.entity.single.Tag;
 import com.neurotoxin.steamclone.repository.single.GameRepository;
 import com.neurotoxin.steamclone.service.connect.CartItemGameService;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -54,6 +54,29 @@ public class GameService {
         return gameRepository.findGameByTitle(title);
     }
 
+    // 게임 등록
+    @Transactional
+    public void addGame(Game game, List<Long> selectedTags, List<Media> media) {
+        // 게임 등록
+        validateDupGame(game);
+        gameRepository.save(game);
+        // 태그 등록
+        for (Long tagId : selectedTags) {
+            Tag tag = tagService.findTagById(tagId);
+            gameTagService.create(game, tag);
+        }
+        // 미디어 등록
+        if (!media.isEmpty()) {
+            game.setMedia(media);
+
+            for (Media medium : media) {
+                medium.setGame(game);
+            }
+        } else {
+            game.setMedia(null);
+        }
+    }
+
     // 게임 삭제
     @Transactional
     public void delete(Long gameId) {
@@ -74,7 +97,7 @@ public class GameService {
 
     // 게임 정보 수정
     @Transactional
-    public void updateGame(Long gameId, Game updatedGame, List<Long> tagIds) {
+    public void updateGame(Long gameId, Game updatedGame, List<Long> tagIds, List<Media> media) {
         Game game = gameRepository.findGameById(gameId);
         if (game == null) {
             throw new NullPointerException("Game not found");
@@ -97,6 +120,12 @@ public class GameService {
                     game.getTags().add(gameTag);
                 }
             }
+        }
+
+        // Media 덮어쓰기
+        game.setMedia(media);
+        for (Media medium : media) {
+            medium.setGame(game);
         }
     }
 

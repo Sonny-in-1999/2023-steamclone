@@ -47,8 +47,11 @@ public class Game {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
-    @OneToMany (mappedBy = "game")
+    @OneToMany (mappedBy = "game", fetch = LAZY)
     private List<Comment> comments;
+
+    @OneToMany (mappedBy = "game", cascade = CascadeType.ALL)
+    private List<Media> media;
 
     @OneToOne(mappedBy = "game")
     private Hub hub;
@@ -79,5 +82,9 @@ public class Game {
 
     public void setHub(Hub hub) {
         this.hub = hub;
+    }
+
+    public void setMedia(List<Media> media) {
+        this.media = media;
     }
 }

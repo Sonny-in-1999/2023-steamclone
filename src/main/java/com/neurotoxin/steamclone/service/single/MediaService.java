@@ -1,6 +1,6 @@
 package com.neurotoxin.steamclone.service.single;
 
-import com.neurotoxin.steamclone.entity.connect.FileStore;
+import com.neurotoxin.steamclone.service.connect.FileStore;
 import com.neurotoxin.steamclone.entity.single.Community;
 import com.neurotoxin.steamclone.entity.single.Media;
 import com.neurotoxin.steamclone.repository.single.MediaRepository;
@@ -49,11 +49,14 @@ public class MediaService {
     }
 
     // 여러 파일을 리스트로 반환
-    public List<Media> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+    @Transactional
+    public List<Media> storeFiles(List<MultipartFile> multipartFiles, Object entity) throws IOException {
         List<Media> media = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                media.add(fileStore.fileToMedia(multipartFile));
+                Media medium = fileStore.fileToMedia(multipartFile, entity);
+                create(medium);
+                media.add(medium);
             }
         }
 

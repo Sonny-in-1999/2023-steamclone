@@ -1,38 +1,44 @@
-package com.neurotoxin.steamclone.entity.connect;
+package com.neurotoxin.steamclone.service.connect;
 
+import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Media;
 import com.neurotoxin.steamclone.entity.single.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class FileStore {
 
-    @Value("${spring.file.upload.location}")
-    private String savedMediaPath;
+//    @Value("${spring.servlet.multipart.location}")
+//    private String savedMediaPath;
+    private String savedMediaPath = "D:\\Programming\\Team Project\\2023-steamclone\\src\\main\\resources\\media";
 
     // 확장자 추출 메소드
     private String getExt(String fileName) {
         int idx = fileName.lastIndexOf(".");
-        return fileName.substring(idx);
+        if (idx > 0 && idx < fileName.length() - 1) {
+            return fileName.substring(idx + 1).toLowerCase();
+        } else {
+            return ""; // Return an empty string for files without extensions.
+        }
     }
     // 파일 이름 생성 메소드 (파일 원본 이름 -> 저장용 이름)
-    private String generateStoreFileName(String fileName) {
+    public String generateStoreFileName(String fileName) {
         String uuid = UUID.randomUUID().toString();
-        String ext = getExt(fileName);
+        String ext = "." + getExt(fileName);
 
         return uuid + ext;
     }
     // 파일 타입 생성 메소드
-    private MediaType setMediaType(String fileName) {
+    public MediaType setMediaType(String fileName) {
         String ext = getExt(fileName);
         MediaType mediaType;
 
@@ -41,24 +47,32 @@ public class FileStore {
         } else if (Arrays.asList("mp4", "avi", "mov").contains(ext)) {
             mediaType = MediaType.VIDEO;
         } else {
-            throw new IllegalArgumentException("Unsupported file extension");
+            throw new UnsupportedOperationException("Unsupported file extension.");
         }
 
         return mediaType;
     }
     // 파일 저장 경로 설정 메소드 - 혹시 모를 확장을 위해 VIDEO를 elif로 처리
-    public String setPath(String storageName, MediaType mediaType) {
-        if (mediaType == MediaType.SCREENSHOT) {
-            return savedMediaPath + "images" + storageName;
-        } else if (mediaType == MediaType.VIDEO) {
-            return savedMediaPath + "vids" + storageName;
-        } else {
-            throw new IllegalStateException("Invalid File Type");
+    public String setPath(String storageName, MediaType mediaType, Object entity) {
+        StringBuilder subDir = new StringBuilder();
+
+        if (entity instanceof Game) {       // 엔티티를 식별자로 받아, Game이면 디렉토리를 app/으로 설정합니다.
+            subDir.append("app/");
         }
+        if (mediaType == MediaType.SCREENSHOT) {
+            subDir.append("images");
+        } else if (mediaType == MediaType.VIDEO) {
+            subDir.append("vids");
+        } else {
+            throw new IllegalStateException("Invalid File Type.");
+        }
+
+        String fullPath = Paths.get(savedMediaPath, subDir.toString(), storageName).toString();
+        return fullPath;
     }
+
     // 파일을 Media 객체로 반환
-    @Transactional
-    public Media fileToMedia(MultipartFile file) throws IOException {
+    public Media fileToMedia(MultipartFile file, Object entity) throws IOException {
         if (file.isEmpty()) {
             return null;
         }
@@ -67,10 +81,9 @@ public class FileStore {
         String storageName = generateStoreFileName(fileName);
         MediaType mediaType = setMediaType(fileName);
 
-        try { file.transferTo(new File(setPath(storageName, mediaType))); }
+        try { file.transferTo(new File(setPath(storageName, mediaType, entity))); }
         catch (IllegalStateException e) {
-            System.out.println("확인할 수 없는 확장자의 파일입니다.");
-            return null;
+            throw new IllegalStateException("확인할 수 없는 확장자의 파일입니다.");
         }
 
         Media media = new Media();
@@ -80,4 +93,5 @@ public class FileStore {
 
         return media;
     }
+
 }
