@@ -8,14 +8,12 @@ import com.neurotoxin.steamclone.service.single.GameService;
 import com.neurotoxin.steamclone.service.single.MediaService;
 import com.neurotoxin.steamclone.service.single.TagService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,9 +45,8 @@ public class GameController {
 
     // 게임 등록
     @PostMapping("/products/add")
-    public String addGame(@ModelAttribute Game game, @RequestParam("releaseDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate, List<Long> selectedTags, List<MultipartFile> files) throws IOException {
+    public String addGame(@ModelAttribute Game game, @RequestParam List<Long> selectedTags, @RequestParam List<MultipartFile> files) throws IOException {
         List<Media> media = mediaService.storeFiles(files, game);
-        game.setReleaseDate(releaseDate);
         gameService.addGame(game, selectedTags, media);
         return "redirect:/products/list";
     }

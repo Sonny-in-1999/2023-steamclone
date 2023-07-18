@@ -1,4 +1,5 @@
 spring:
+
   h2:
     console:
       enabled: true
@@ -19,7 +20,19 @@ spring:
         #        show_sql: true  # sout을 통해 실행 sql 로그 출력
         format_sql: true
 
+  servlet:
+    multipart:
+      enabled: true
+      location:
+      max-file-size: 100MB
+      max-request-size: 500MB
+
 logging:
   level:
     org.hibernate.sql: debug  # logger를 통해 실행 sql 로그 출력
     org.hibernate.type: trace
+
+
+jwt:
+  secret:
+    asjkdfjkha32434294@!*dkasjd1213123-0@d10@#*$&*&%d12od12d00di1id93d3dj13hd1309ud13

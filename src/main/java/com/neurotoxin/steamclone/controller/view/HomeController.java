@@ -23,4 +23,9 @@ public class HomeController {
         }
         return "home";
     }
+
+//    @RequestMapping(value = "/favicon.ico", method = RequestMethod.GET)
+//    public void favicon(HttpServletRequest request) {
+//        // favicon 처리
+//    }
 }

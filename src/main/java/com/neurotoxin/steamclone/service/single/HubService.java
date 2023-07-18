@@ -1,5 +1,6 @@
 package com.neurotoxin.steamclone.service.single;
 
+import com.neurotoxin.steamclone.entity.single.Community;
 import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Hub;
 import com.neurotoxin.steamclone.repository.single.HubRepository;
@@ -35,10 +36,23 @@ public class HubService {
     }
 
     @Transactional
+    public void connect(Game game) {
+        Hub hub = new Hub();
+        hubRepository.save(hub);
+        hub.setGame(game);
+        game.setHub(hub);
+    }
+
+    @Transactional
     public void disconnect(Game game) {
         Hub findHub = game.getHub();
+        List<Community> findCommunities = findHub.getCommunities();
+        for (Community findCommunity : findCommunities) {
+            findCommunity.setHub(null);
+        }
         findHub.getCommunities().clear();
         game.setHub(null);
         hubRepository.delete(findHub);
     }
+
 }

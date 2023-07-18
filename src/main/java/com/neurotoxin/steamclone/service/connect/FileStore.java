@@ -1,5 +1,6 @@
 package com.neurotoxin.steamclone.service.connect;
 
+import com.neurotoxin.steamclone.entity.single.Community;
 import com.neurotoxin.steamclone.entity.single.Game;
 import com.neurotoxin.steamclone.entity.single.Media;
 import com.neurotoxin.steamclone.entity.single.MediaType;
@@ -56,8 +57,10 @@ public class FileStore {
     public String setPath(String storageName, MediaType mediaType, Object entity) {
         StringBuilder subDir = new StringBuilder();
 
-        if (entity instanceof Game) {       // 엔티티를 식별자로 받아, Game이면 디렉토리를 app/으로 설정합니다.
+        if (entity instanceof Game) {       // 엔티티를 식별자로 받아, 상위 디렉토리를 결정
             subDir.append("app/");
+        } else if (entity instanceof Community) {
+            subDir.append("community/");
         }
         if (mediaType == MediaType.SCREENSHOT) {
             subDir.append("images");

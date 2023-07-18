@@ -6,6 +6,7 @@ import com.neurotoxin.steamclone.entity.connect.GameTag;
 import com.neurotoxin.steamclone.entity.connect.WishListGame;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Game {
 
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
     @OneToMany (mappedBy = "game", fetch = EAGER)
@@ -53,7 +55,7 @@ public class Game {
     @OneToMany (mappedBy = "game", cascade = CascadeType.ALL)
     private List<Media> media;
 
-    @OneToOne(mappedBy = "game")
+    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
     private Hub hub;
 
     public void setTitle(String title) {

@@ -20,21 +20,26 @@
         <td>
             <div th:each="image : ${community.media}"
                  th:if="${image.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).SCREENSHOT}">
-                <img th:src="@{/main/resources/media/community/images/__${image.storageName}__}" width="300" height="300" style="margin-right: 5px"/>
+                <img th:src="@{/main/resources/community/media/images/__${image.storageName}__}" width="300" height="300" style="margin-right: 5px"/>
             </div>
             <div th:each="vid : ${community.media}"
                  th:if="${vid.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).VIDEO}">
-                <video th:src="@{/main/resources/media/community/vids/__${vid.storageName}__}" width="300" height="300" style="margin-right: 5px" controls></video>
+                <video th:src="@{/main/resources/community/media/vids/__${vid.storageName}__}" width="300" height="300" style="margin-right: 5px" controls></video>
             </div>
-        </td>
-        <td>
             <div th:each="image : ${community.media}" th:if="${image.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).SCREENSHOT}">
-                <a th:href="@{/media/__${image.storageName}__}", originName=${originName}, communityId=${communityId}" download>Download</a>
+                <form th:if="${community.getId()} != null" th:action="@{/media/__${image.storageName}__}" method="get">
+                    <input type="hidden" name="communityId" th:value="${community.id}" />
+                    <input type="hidden" name="originName" th:value="${originName}" />
+                    <button type="submit" name="download" value="true">Download</button>
+                </form>
             </div>
             <div th:each="vid : ${community.media}" th:if="${vid.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).VIDEO}">
-                <a th:href="@{/media/__${vid.storageName}__}", originName=${originName}, communityId=${communityId}" download>Download</a>
+                <form th:if="${community.getId()} != null" th:action="@{/media/__${vid.storageName}__}" method="get">
+                    <input type="hidden" name="communityId" th:value="${community.id}" />
+                    <input type="hidden" name="originName" th:value="${originName}" />
+                    <button type="submit" name="download" value="true">Download</button>
+                </form>
             </div>
-        </td>
     </tr>
 </table>
 

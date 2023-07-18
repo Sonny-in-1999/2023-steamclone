@@ -21,6 +21,16 @@
                 <li th:each="tag : ${game.tags}" th:text="${tag.tag.name}"></li>
             </ul>
         </td>
+        <td>
+            <div th:each="vid : ${game.media}"
+                 th:if="${vid.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).VIDEO}">
+                <video th:src="@{/main/resources/media/app/vids/__${vid.storageName}__}" width="300" height="300" style="margin-right: 5px" controls></video>
+            </div>
+            <div th:each="image : ${game.media}"
+                 th:if="${image.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).SCREENSHOT}">
+                <img th:src="@{/main/resources/media/app/images/__${image.storageName}__}" width="300" height="300" style="margin-right: 5px"/>
+            </div>
+        </td>
     </tr>
 </table>
 

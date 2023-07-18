@@ -7,7 +7,7 @@
 <body>
 <h1>Add Game</h1>
 
-<form action="/products/add" method="post" th:object="${game}">
+<form action="/products/add" method="post" enctype="multipart/form-data" th:object="${game}">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" th:field="*{title}" required><br><br>
 

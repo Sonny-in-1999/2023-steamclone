@@ -24,6 +24,20 @@
         <label th:for="${'tag-' + tag.id}" th:text="${tag.name}"></label><br>
     </div><br>
 
+    <div th:if="${#lists.size(game.media) > 0}">
+        <h3>Media</h3>
+        <div th:each="vid : ${game.media}"
+             th:if="${vid.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).VIDEO}">
+            <iframe th:src="@{/main/resources/media/app/vids/__${vid.storageName}__}" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div th:each="image : ${game.media}"
+             th:if="${image.mediaType == T(com.neurotoxin.steamclone.entity.single.MediaType).SCREENSHOT}">
+            <img th:src="@{/main/resources/media/app/images/__${image.storageName}__}" width="300" height="200">
+        </div>
+    </div>
+
+    <h3>Photos:</h3>
+
 
     <button type="submit">Update</button>
 

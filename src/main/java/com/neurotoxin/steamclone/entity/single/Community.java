@@ -77,4 +77,8 @@ public class Community {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public void setHub(Hub hub) {
+        this.hub = hub;
+    }
 }

@@ -62,7 +62,7 @@ public class FranchiseService {
 
         int findIndex = franchiseGames.indexOf(game);
         if (findIndex != -1) {
-            franchiseGames.remove(findIndex);
+                franchiseGames.remove(findIndex);
         }
     }
     // 프랜차이즈에 연결된 모든 게임과의 연결 삭제

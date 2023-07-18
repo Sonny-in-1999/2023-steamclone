@@ -82,15 +82,30 @@ public class CommunityController {
     }
 
     // 파일 이름으로 경로를 설정해 UrlResource로, ResponseBody로 반환하여 다운로드를 허가
+//    @GetMapping("/media/{filename}")
+//    public ResponseEntity<Resource> processMedia(@PathVariable String filename, @RequestParam Long communityId, @RequestParam String originName) throws MalformedURLException {
+//        Community community = communityService.findCommunityById(communityId);
+//        UrlResource urlResource = new UrlResource("file:" + fileStore.setPath(filename, fileStore.setMediaType(filename), community));
+//        // "file:" : 로컬 파일에 직접 접근할 수 있게 함
+//        String encodedUploadFileName = UriUtils.encode(originName, StandardCharsets.UTF_8); // 한글 깨짐 방지를 위한 UTF-8 Encode
+//        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+//
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+//                .body(urlResource);
+//    }
     @GetMapping("/media/{filename}")
-    public ResponseEntity<Resource> processMedia(@PathVariable String filename, @RequestParam String originName, Long communityId) throws MalformedURLException {
+    public ResponseEntity<Resource> processMedia(@PathVariable String filename,
+                                                 @RequestParam Long communityId,
+                                                 @RequestParam String originName) throws MalformedURLException {
         Community community = communityService.findCommunityById(communityId);
         UrlResource urlResource = new UrlResource("file:" + fileStore.setPath(filename, fileStore.setMediaType(filename), community));
 
-        String encodedUploadFileName = UriUtils.encode(originName, StandardCharsets.UTF_8); // 한글 깨짐 방지를 위한 UTF-8 Encode
-        String contentDisposition = "filename=\"" + encodedUploadFileName + "\"";
+        String encodedUploadFileName = UriUtils.encode(originName, StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
 
         return ResponseEntity.ok()
+
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(urlResource);
     }

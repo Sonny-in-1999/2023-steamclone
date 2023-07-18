@@ -20,4 +20,8 @@ public class Hub {
 
     @OneToMany(mappedBy = "hub")
     private List<Community> communities;
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

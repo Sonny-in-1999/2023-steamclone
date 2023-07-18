@@ -60,6 +60,8 @@ public class GameService {
         // 게임 등록
         validateDupGame(game);
         gameRepository.save(game);
+        // 커뮤니티 허브 생성 및 등록
+        hubService.connect(game);
         // 태그 등록
         for (Long tagId : selectedTags) {
             Tag tag = tagService.findTagById(tagId);
@@ -88,9 +90,8 @@ public class GameService {
         wishListGameService.disconnect(findGame);
         cartItemGameService.disconnect(findGame);
         hubService.disconnect(findGame);
-        franchiseService.disconnectGame(findGame);
-        commentService.disconnectFromEntity(findGame);
-        communityService.disconnectFromEntity(findGame);
+        if (findGame.getFranchise() != null) franchiseService.disconnectGame(findGame);
+        if (!findGame.getComments().isEmpty()) commentService.disconnectFromEntity(findGame);
 
         gameRepository.delete(findGame);
     }
